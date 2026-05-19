@@ -8,3 +8,4 @@ name = "binscan_core"
 path = "src/lib.rs"
 
 [dependencies]
+goblin = "0.10.5"
