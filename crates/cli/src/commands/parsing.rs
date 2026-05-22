@@ -5,11 +5,11 @@ use clap::Parser;
 pub struct ParsedArgs {
     // input file specified after -s
     #[arg(short = 's', long, help = "Path to the source file")]
-    source: String,
+    pub source: String,
 
     // saving report in the file specified after -r (optional)
     #[arg(short = 'r', long, help = "Path to save the report")]
-    report: Option<String>,
+    pub report: Option<String>,
 }
 
 pub fn run() -> ParsedArgs {

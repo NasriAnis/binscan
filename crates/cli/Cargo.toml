@@ -8,5 +8,5 @@ name = "binscan"
 path = "src/main.rs"
 
 [dependencies]
-#firmware-core = { path = "../core" }
+library = { path = "../library" }
 clap = { version = "4.0", features = ["derive"] }
