@@ -1,4 +1,4 @@
-pub fn string_extraction(buffer: &Vec<u8>) -> Vec<String>
+pub fn string_extraction(buffer: &[u8]) -> Vec<String>
 {
     // loop throught the buffer byte and store
     // ASCII characteres into a temporary Vec
@@ -8,6 +8,7 @@ pub fn string_extraction(buffer: &Vec<u8>) -> Vec<String>
         if byte.is_ascii_graphic() || *byte == b' ' {
             temp.push(*byte);
         }
+        // check lenght
         else {
             if temp.len() >= 6 {
                 result.push(String::from_utf8_lossy(&temp).to_string())
