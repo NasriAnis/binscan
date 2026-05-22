@@ -52,8 +52,9 @@ pub fn extract(path_to_buf: String) ->  Result<Extracted_modules, error::Error>
         imports: extracted_imports,
     };
 
-    println!("Extracted Strings : \n{:?}\n\n extracted symbols : \n{:?}\n\n Extracted imports : \n{:?}",
-                extracted.strings, extracted.symbols, extracted.imports);
+    // debuging purpose
+    // println!("Extracted Strings : \n{:?}\n\n extracted symbols : \n{:?}\n\n Extracted imports : \n{:?}",
+    //             extracted.strings, extracted.symbols, extracted.imports);
 
     Ok(extracted)
 }
