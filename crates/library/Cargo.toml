@@ -1,0 +1,11 @@
+[package]
+name = "library"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "library"
+path = "src/lib.rs"
+
+[dependencies]
+goblin = "0.10.5"
