@@ -1,7 +1,8 @@
 use std::fs;
 use goblin::{Object, error};
+use crate::filetype;
 
-use crate::{Extracted_modules,
+use crate::{Extracted_modules, Binary_data,
             extractor::extract::string::string_extraction,
             extractor::extract::elf::{extract_elf_imports, extract_elf_symbols},
             extractor::extract::pe::{extract_pe_imports, extract_pe_symbols}};
@@ -24,6 +25,7 @@ pub fn extract(path_to_buf: String) ->  Result<Extracted_modules, error::Error>
     let mut extracted_strings: Vec<String> = vec!["".to_string()];
     let mut extracted_symbols: Vec<String> = vec!["".to_string()];
     let mut extracted_imports: Vec<String> = vec!["".to_string()];
+    let _file_type: filetype;
 
     extracted_strings = string_extraction(&buffer);
 
@@ -31,11 +33,13 @@ pub fn extract(path_to_buf: String) ->  Result<Extracted_modules, error::Error>
     match Object::parse(&buffer)?
     {
         Object::Elf(_) => {
+            _file_type = filetype::ELF;
             extracted_symbols = extract_elf_symbols(&buffer);
             extracted_imports = extract_elf_imports(&buffer);
         },
 
         Object::PE(_) => {
+            _file_type = filetype::PE;
             extracted_symbols = extract_pe_symbols(&buffer);
             extracted_imports = extract_pe_imports(&buffer);
         },
@@ -47,6 +51,7 @@ pub fn extract(path_to_buf: String) ->  Result<Extracted_modules, error::Error>
 
     // saving data into public structure
     let extracted = Extracted_modules {
+        file_type: _file_type,
         strings: extracted_strings,
         symbols: extracted_symbols,
         imports: extracted_imports,
