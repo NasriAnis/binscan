@@ -9,3 +9,4 @@ path = "src/lib.rs"
 
 [dependencies]
 goblin = "0.10.5"
+regex = "1.12.3"
