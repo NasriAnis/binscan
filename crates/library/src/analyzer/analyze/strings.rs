@@ -38,7 +38,7 @@ static COMPILER_PATTERNS: &[CompilerPattern] = &[
     },
 ];
 
-pub fn analyze_strings_for_libs(data: &Extracted_modules) -> (Vec<String>, String)
+pub fn analyze_strings(data: &Extracted_modules) -> (Vec<String>, String)
 {
     let re = Regex::new(r"(?P<functions>\w+)@@(?P<libs>[\w.]+)").unwrap();
     let mut fetched_libs: Vec<String> = Vec::new();
