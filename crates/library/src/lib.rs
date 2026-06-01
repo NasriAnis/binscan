@@ -18,10 +18,11 @@ pub struct Extracted_modules {
 }
 
 pub struct Binary_data {
-    pub binary: String,
-    pub format: String,
+    // pub binary: String,
+    // pub format: String,
     pub compiler: String,
-    pub detected_components: Vec<String>,
-    pub bahvior_flags: Vec<String>,
-    pub build_info: Vec<String>,
+    pub libs: Vec<String>,
+    // pub detected_components: Vec<String>,
+    // pub bahvior_flags: Vec<String>,
+    // pub build_info: Vec<String>,
 }
