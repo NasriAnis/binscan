@@ -11,7 +11,7 @@ mod string;
 mod elf;
 mod pe;
 
-pub fn extract(path_to_buf: String) ->  Result<Extracted_modules, error::Error>
+pub fn run(path_to_buf: String) ->  Result<Extracted_modules, error::Error>
 {
     // Reads the entire contents of a file into a bytes vector.
     let buffer;
