@@ -21,10 +21,13 @@ pub struct Extracted_modules {
 
 #[derive(Debug)]
 pub struct Binary_data {
-    // pub binary: String,
     pub format: filetype,
     pub compiler: String,
     pub libs: Vec<String>,
+    pub imports: Vec<String>,
+
+    // future add ons
+    // pub binary: String,
     // pub detected_components: Vec<String>,
     // pub bahvior_flags: Vec<String>,
     // pub build_info: Vec<String>,

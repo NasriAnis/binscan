@@ -43,10 +43,11 @@ pub fn analyze_strings(data: &Extracted_modules) -> (Vec<String>, String)
     let re = Regex::new(r"(?P<functions>\w+)@@(?P<libs>[\w.]+)").unwrap();
     let mut fetched_libs: Vec<String> = Vec::new();
 
-    for strings in &data.strings {
+    for strings in data.strings.iter().chain(data.symbols.iter())  {
         let Some(caps) = re.captures(strings.as_str()) else {
             continue;
         };
+        // debuging purpose
         // println!("The lib is: {} {}", &caps["function"], &caps["lib"]);
         fetched_libs.push(caps["libs"].to_string());
     }

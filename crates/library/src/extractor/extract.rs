@@ -2,7 +2,7 @@ use std::fs;
 use goblin::{Object, error};
 use crate::filetype;
 
-use crate::{Extracted_modules, Binary_data,
+use crate::{Extracted_modules,
             extractor::extract::string::string_extraction,
             extractor::extract::elf::{extract_elf_imports, extract_elf_symbols},
             extractor::extract::pe::{extract_pe_imports, extract_pe_symbols}};

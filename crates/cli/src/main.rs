@@ -17,7 +17,7 @@ fn main()
         // debuging purposes :
         // println!("Extraction result : {:?}", extraction_result);
         
-        let analyzer_result = analyze::run(&extraction_result);
+        let analyzer_result = analyze::run(extraction_result);
         // debuging purposes :
         println!("Analyzer results: {:?}", analyzer_result);
 
