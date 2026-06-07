@@ -8,5 +8,6 @@ name = "binscan"
 path = "src/main.rs"
 
 [dependencies]
+tokio = { version = "1", features = ["full"] }
 library = { path = "../library" }
 clap = { version = "4.0", features = ["derive"] }

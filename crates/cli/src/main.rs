@@ -1,11 +1,11 @@
-use std::{iter::Scan, path::Path};
+use std::path::Path;
 
 mod commands;
-// use commands::{scan, report, extract, parsing};
 use commands::parsing;
-use library::{analyzer::analyze, extractor::extract};
+use library::{analyzer::analyze, extractor::extract, vuln_db::vuln_database::scan_db_for};
 
-fn main()
+#[tokio::main]
+async fn main()
 {
     // parse cmd input into struct
     let args = parsing::run();
@@ -20,6 +20,8 @@ fn main()
         let analyzer_result = analyze::run(extraction_result);
         // debuging purposes :
         println!("Analyzer results: {:?}", analyzer_result);
+
+        scan_db_for().await;
 
         println!("Program will exit succesfully");
     }

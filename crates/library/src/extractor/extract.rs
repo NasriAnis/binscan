@@ -1,17 +1,17 @@
 use std::fs;
 use goblin::{Object, error};
-use crate::filetype;
+use crate::{SecurityInfo, FileType};
 
-use crate::{Extracted_modules,
+use crate::{ExtractedModules,
             extractor::extract::string::string_extraction,
-            extractor::extract::elf::{extract_elf_imports, extract_elf_symbols},
-            extractor::extract::pe::{extract_pe_imports, extract_pe_symbols}};
+            extractor::extract::elf::extract_elf_data,
+            extractor::extract::pe::extract_pe_data};
 
 mod string;
 mod elf;
 mod pe;
 
-pub fn run(path_to_buf: String) ->  Result<Extracted_modules, error::Error>
+pub fn run(path_to_buf: String) ->  Result<ExtractedModules, error::Error>
 {
     // Reads the entire contents of a file into a bytes vector.
     let buffer;
@@ -25,7 +25,8 @@ pub fn run(path_to_buf: String) ->  Result<Extracted_modules, error::Error>
     let mut extracted_strings: Vec<String> = vec!["".to_string()];
     let mut extracted_symbols: Vec<String> = vec!["".to_string()];
     let mut extracted_imports: Vec<String> = vec!["".to_string()];
-    let _file_type: filetype;
+    let extracted_security_info: SecurityInfo;
+    let _file_type: FileType;
 
     extracted_strings = string_extraction(&buffer);
 
@@ -33,15 +34,19 @@ pub fn run(path_to_buf: String) ->  Result<Extracted_modules, error::Error>
     match Object::parse(&buffer)?
     {
         Object::Elf(_) => {
-            _file_type = filetype::ELF;
-            extracted_symbols = extract_elf_symbols(&buffer);
-            extracted_imports = extract_elf_imports(&buffer);
+            _file_type = FileType::ELF;
+            let (imports, symbols, sec) = extract_elf_data(&buffer);
+            extracted_imports = imports;
+            extracted_symbols = symbols;
+            extracted_security_info = SecurityInfo::Elf(sec);
         },
 
         Object::PE(_) => {
-            _file_type = filetype::PE;
-            extracted_symbols = extract_pe_symbols(&buffer);
-            extracted_imports = extract_pe_imports(&buffer);
+            _file_type = FileType::PE;
+            let (imports, symbols, sec) = extract_pe_data(&buffer);
+            extracted_imports = imports;
+            extracted_symbols = symbols;
+            extracted_security_info = SecurityInfo::Pe(sec);
         },
 
         _ => {
@@ -50,11 +55,12 @@ pub fn run(path_to_buf: String) ->  Result<Extracted_modules, error::Error>
     }
 
     // saving data into public structure
-    let extracted = Extracted_modules {
+    let extracted = ExtractedModules {
         file_type: _file_type,
         strings: extracted_strings,
         symbols: extracted_symbols,
         imports: extracted_imports,
+        security: extracted_security_info,
     };
 
     // debuging purpose

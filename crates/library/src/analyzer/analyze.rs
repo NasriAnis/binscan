@@ -1,16 +1,17 @@
-use crate::{Binary_data, Extracted_modules, analyzer::analyze::strings::analyze_strings};
-mod strings;
+use crate::{BinaryData, ExtractedModules};
+mod analyze_strings;
+mod detect_compiler;
 
-pub fn run(data: Extracted_modules) -> Binary_data
+pub fn run(data: ExtractedModules) -> BinaryData
 {
-    let mut _libs: Vec<String> = Vec::new();
-    let mut _compiler = String::new();
-    (_libs, _compiler) = analyze_strings(&data);
+    let _libs = analyze_strings::run(&data);
+    let _compiler = detect_compiler::run(&data);
 
-    Binary_data {
+    BinaryData {
         format: data.file_type,
-        compiler: _compiler,
+        compiler: _compiler.unwrap_or("Unkown".to_string()),
         libs: _libs,
         imports: data.imports,
+        security: data.security,
     }
 }

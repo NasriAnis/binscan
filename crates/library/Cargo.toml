@@ -8,5 +8,6 @@ name = "library"
 path = "src/lib.rs"
 
 [dependencies]
+reqwest = { version = "0.13.4", features = ["json"] }
 goblin = "0.10.5"
 regex = "1.12.3"
