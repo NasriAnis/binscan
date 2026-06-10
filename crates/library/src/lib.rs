@@ -1,6 +1,6 @@
 pub mod analyzer;
 pub mod extractor;
-pub mod vuln_db;
+pub mod db;
 
 #[derive(Debug, Clone, Copy)]
 pub enum FileType {

@@ -1,11 +1,7 @@
 use std::fs;
 use goblin::{Object, error};
 use crate::{SecurityInfo, FileType};
-
-use crate::{ExtractedModules,
-            extractor::extract::string::string_extraction,
-            extractor::extract::elf::extract_elf_data,
-            extractor::extract::pe::extract_pe_data};
+use crate::{ExtractedModules};
 
 mod string;
 mod elf;
@@ -22,31 +18,31 @@ pub fn run(path_to_buf: String) ->  Result<ExtractedModules, error::Error>
         }
     };
 
-    let mut extracted_strings: Vec<String> = vec!["".to_string()];
-    let mut extracted_symbols: Vec<String> = vec!["".to_string()];
-    let mut extracted_imports: Vec<String> = vec!["".to_string()];
+    let extracted_strings: Vec<String>;
+    let extracted_symbols: Vec<String>;
+    let extracted_imports: Vec<String>;
     let extracted_security_info: SecurityInfo;
     let _file_type: FileType;
 
-    extracted_strings = string_extraction(&buffer);
+    extracted_strings = string::extract(&buffer);
 
     // match binary type using goblin
     match Object::parse(&buffer)?
     {
         Object::Elf(_) => {
             _file_type = FileType::ELF;
-            let (imports, symbols, sec) = extract_elf_data(&buffer);
+            let (imports, symbols, security) = elf::extract(&buffer);
             extracted_imports = imports;
             extracted_symbols = symbols;
-            extracted_security_info = SecurityInfo::Elf(sec);
+            extracted_security_info = SecurityInfo::Elf(security);
         },
 
         Object::PE(_) => {
             _file_type = FileType::PE;
-            let (imports, symbols, sec) = extract_pe_data(&buffer);
+            let (imports, symbols, security) = pe::extract(&buffer);
             extracted_imports = imports;
             extracted_symbols = symbols;
-            extracted_security_info = SecurityInfo::Pe(sec);
+            extracted_security_info = SecurityInfo::Pe(security);
         },
 
         _ => {

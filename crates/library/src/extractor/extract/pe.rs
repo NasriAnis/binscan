@@ -8,7 +8,7 @@ const IMAGE_DLLCHARACTERISTICS_NX_COMPAT:       u16 = 0x0100;
 const IMAGE_DLLCHARACTERISTICS_NO_SEH:          u16 = 0x0400;
 const IMAGE_DLLCHARACTERISTICS_GUARD_CF:        u16 = 0x4000;
 
-pub fn extract_pe_data(buffer: &[u8]) -> (Vec<String>, Vec<String>, PeSecurityInfo)
+pub fn extract(buffer: &[u8]) -> (Vec<String>, Vec<String>, PeSecurityInfo)
 {
     ( extract_pe_imports(buffer), extract_pe_symbols(buffer), extract_pe_security(buffer) )
 }

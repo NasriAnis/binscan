@@ -4,7 +4,7 @@ use goblin::elf::program_header::{PT_GNU_STACK, PT_GNU_RELRO, PF_X};
 
 use crate::ElfSecurityInfo;
 
-pub fn extract_elf_data(buffer: &[u8]) -> (Vec<String>, Vec<String>, ElfSecurityInfo) 
+pub fn extract(buffer: &[u8]) -> (Vec<String>, Vec<String>, ElfSecurityInfo) 
 {
     ( extract_elf_imports(buffer), extract_elf_symbols(buffer), extract_elf_security(buffer) )
 }

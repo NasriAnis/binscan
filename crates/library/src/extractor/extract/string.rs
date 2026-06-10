@@ -1,4 +1,4 @@
-pub fn string_extraction(buffer: &[u8]) -> Vec<String>
+pub fn extract(buffer: &[u8]) -> Vec<String>
 {
     // loop throught the buffer byte and store
     // ASCII characteres into a temporary Vec
