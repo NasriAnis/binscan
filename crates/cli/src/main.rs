@@ -22,10 +22,11 @@ async fn main()
         let responses = request::make(analyzer_result, "Debian:12".to_string()).await;
         // println!("Responses: {:?}", responses);
         
-        let parsed_data = response::parse(responses);
-        println!("Parsed Data: {:?}", parsed_data);
-        
-        println!("Program will exit succesfully");
+        let parsed_data = response::parse(responses).unwrap();
+        // println!("Parsed Data: {:?}", parsed_data);
+
+        let processed = response::process(parsed_data, "Debian:12".to_string());
+        println!("Processed data : {processed:?}");
     }
     else {
         println!("The specified path is invalid: {}", args.source);

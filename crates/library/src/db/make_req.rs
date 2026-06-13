@@ -17,19 +17,5 @@ pub async fn send(data: String) -> Result<String, reqwest::Error>
         .text()
         .await;
 
-    // let res = client
-    //     .post(OS_API)
-    //     .json(&data)
-    //     .build()?;
-    
-    // now you can inspect everything
-    // println!("URL:     {}", res.url());
-    // println!("Method:  {}", res.method());
-    // println!("Headers: {:#?}", res.headers());
-    // println!("Body:    {:?}", res.body());
-    
-    // let response = client.execute(res).await;
-    // println!("the response: {:?}", response);
-
     response
 }
