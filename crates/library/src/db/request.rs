@@ -1,6 +1,9 @@
-use crate::{BinaryData, db::{json_req, make_req}};
+use crate::{
+    BinaryData,
+    db::{json_req, make_req},
+};
 
-pub async fn make(data: BinaryData, eco: String) -> Vec<String>{
+pub async fn make(data: BinaryData, eco: String) -> Vec<String> {
     let json_body = json_req::make(&data, eco);
     // println!("JSON body: {:?}", json_body);
 

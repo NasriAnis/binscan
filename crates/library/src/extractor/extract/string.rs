@@ -1,5 +1,4 @@
-pub fn extract(buffer: &[u8]) -> Vec<String>
-{
+pub fn extract(buffer: &[u8]) -> Vec<String> {
     // loop throught the buffer byte and store
     // ASCII characteres into a temporary Vec
     let mut temp: Vec<u8> = Vec::new();
@@ -16,5 +15,5 @@ pub fn extract(buffer: &[u8]) -> Vec<String>
             temp.clear();
         }
     }
-   result
+    result
 }

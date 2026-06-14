@@ -10,10 +10,20 @@ pub struct ParsedArgs {
     #[arg(short = 'A', long, help = "Check via API")]
     pub api: bool,
 
-    #[arg(short = 'S', long, help = "Check for severity levels.", requires="api")]
+    #[arg(
+        short = 'S',
+        long,
+        help = "Check for severity levels.",
+        requires = "api"
+    )]
     pub severity: Option<Severity>,
 
-    #[arg(short = 'e', long, help = "Ecosystem, default: Debian13", requires="api")]
+    #[arg(
+        short = 'e',
+        long,
+        help = "Ecosystem, default: Debian13",
+        requires = "api"
+    )]
     pub ecosystem: Option<String>,
 
     // saving report in the file specified after -r (optional)
@@ -26,7 +36,7 @@ pub fn run() -> ParsedArgs {
 }
 
 #[derive(Debug, Clone, clap::ValueEnum)]
-pub enum Severity{
+pub enum Severity {
     NotAssigned,
     Unimportant,
     Low,

@@ -1,11 +1,10 @@
 use crate::BinaryData;
 use serde_json::{self, json};
 
-pub fn make(data: &BinaryData, eco: String) -> Vec<String>{
+pub fn make(data: &BinaryData, eco: String) -> Vec<String> {
     let mut requests: Vec<String> = Vec::new();
-    
+
     for libs in &data.libs {
-        
         let l: Vec<&str> = libs.split("_").collect();
         let body = json!({
             "package": {
@@ -13,7 +12,7 @@ pub fn make(data: &BinaryData, eco: String) -> Vec<String>{
                 "ecosystem": eco
             }, "version": l[1]
         });
-        
+
         // Serialize to JSON string
         let json = serde_json::to_string(&body).unwrap();
         requests.push(json);

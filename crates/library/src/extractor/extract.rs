@@ -1,20 +1,21 @@
-use std::fs;
+use crate::ExtractedModules;
+use crate::{FileType, SecurityInfo};
 use goblin::{Object, error};
-use crate::{SecurityInfo, FileType};
-use crate::{ExtractedModules};
+use std::fs;
 
-mod string;
 mod elf;
 mod pe;
+mod string;
 
-pub fn run(path_to_buf: String) ->  Result<ExtractedModules, error::Error>
-{
+pub fn run(path_to_buf: String) -> Result<ExtractedModules, error::Error> {
     // Reads the entire contents of a file into a bytes vector.
     let buffer;
     match fs::read(path_to_buf) {
         Ok(t) => buffer = t,
         _ => {
-            return Err(error::Error::Malformed("Reading the specified buffer".to_string()))
+            return Err(error::Error::Malformed(
+                "Reading the specified buffer".to_string(),
+            ));
         }
     };
 
@@ -27,15 +28,14 @@ pub fn run(path_to_buf: String) ->  Result<ExtractedModules, error::Error>
     extracted_strings = string::extract(&buffer);
 
     // match binary type using goblin
-    match Object::parse(&buffer)?
-    {
+    match Object::parse(&buffer)? {
         Object::Elf(_) => {
             _file_type = FileType::ELF;
             let (imports, symbols, security) = elf::extract(&buffer);
             extracted_imports = imports;
             extracted_symbols = symbols;
             extracted_security_info = SecurityInfo::Elf(security);
-        },
+        }
 
         Object::PE(_) => {
             _file_type = FileType::PE;
@@ -43,11 +43,9 @@ pub fn run(path_to_buf: String) ->  Result<ExtractedModules, error::Error>
             extracted_imports = imports;
             extracted_symbols = symbols;
             extracted_security_info = SecurityInfo::Pe(security);
-        },
-
-        _ => {
-            return Err(error::Error::Malformed("Unsupported file type".to_string()))
         }
+
+        _ => return Err(error::Error::Malformed("Unsupported file type".to_string())),
     }
 
     // saving data into public structure

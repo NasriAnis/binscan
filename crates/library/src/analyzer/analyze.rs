@@ -2,8 +2,7 @@ use crate::{BinaryData, ExtractedModules};
 mod analyze_strings;
 mod detect_compiler;
 
-pub fn run(data: ExtractedModules) -> BinaryData
-{
+pub fn run(data: ExtractedModules) -> BinaryData {
     let _libs = analyze_strings::run(&data);
     let _compiler = detect_compiler::run(&data);
 

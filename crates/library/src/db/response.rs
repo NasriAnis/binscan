@@ -19,11 +19,11 @@ pub struct Vuln {
     #[serde(default)]
     pub published: Option<String>,
     #[serde(default)]
-    pub upstream: Vec<String>,      // upstream CVE IDs e.g. ["CVE-2023-4911"]
+    pub upstream: Vec<String>, // upstream CVE IDs e.g. ["CVE-2023-4911"]
     #[serde(default)]
     pub affected: Vec<Affected>,
     #[serde(default)]
-    pub severity: Vec<Severity>,    // CVSS scores
+    pub severity: Vec<Severity>, // CVSS scores
 }
 
 // One affected package block
@@ -33,7 +33,7 @@ pub struct Affected {
     #[serde(default)]
     pub ranges: Vec<Range>,
     #[serde(default)]
-    pub versions: Vec<String>,      // explicit affected versions list
+    pub versions: Vec<String>, // explicit affected versions list
     #[serde(default)]
     pub ecosystem_specific: Option<EcosystemSpecific>,
 }
@@ -41,7 +41,7 @@ pub struct Affected {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Package {
     pub name: String,
-    pub ecosystem: String,          // e.g. "Debian:12"
+    pub ecosystem: String, // e.g. "Debian:12"
     #[serde(default)]
     pub purl: Option<String>,
 }
@@ -50,7 +50,7 @@ pub struct Package {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Range {
     #[serde(rename = "type")]
-    pub range_type: String,         // "ECOSYSTEM"
+    pub range_type: String, // "ECOSYSTEM"
     #[serde(default)]
     pub events: Vec<RangeEvent>,
 }
@@ -65,15 +65,15 @@ pub struct RangeEvent {
 // Debian urgency metadata
 #[derive(Serialize, Deserialize, Debug)]
 pub struct EcosystemSpecific {
-    pub urgency: Option<String>,    // "unimportant" | "low" | "medium" | "high" | "not yet assigned"
+    pub urgency: Option<String>, // "unimportant" | "low" | "medium" | "high" | "not yet assigned"
 }
 
 // CVSS score block
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Severity {
     #[serde(rename = "type")]
-    pub severity_type: String,      // "CVSS_V3" | "CVSS_V4"
-    pub score: String,              // "CVSS:3.1/AV:N/AC:L/..."
+    pub severity_type: String, // "CVSS_V3" | "CVSS_V4"
+    pub score: String, // "CVSS:3.1/AV:N/AC:L/..."
 }
 
 pub fn parse(data: Vec<String>) -> Result<Vec<Response>> {
@@ -85,7 +85,7 @@ pub fn parse(data: Vec<String>) -> Result<Vec<Response>> {
     Ok(vec_parsed)
 }
 
-pub fn process(data: Vec<Response>, eco: String) -> Vec<Vuln>{
+pub fn process(data: Vec<Response>, eco: String) -> Vec<Vuln> {
     let mut processed: Vec<Vuln> = Vec::new();
 
     for res in data {
@@ -97,8 +97,9 @@ pub fn process(data: Vec<Response>, eco: String) -> Vec<Vuln>{
                 if let Some(eco_specif) = &affect.ecosystem_specific {
                     if eco_specif.urgency == Some("unimportant".to_string())
                         || eco_specif.urgency == Some("medium".to_string())
-                            || eco_specif.urgency == Some("not yet assigned".to_string())
-                                || eco_specif.urgency== Some("low".to_string()) {
+                        || eco_specif.urgency == Some("not yet assigned".to_string())
+                        || eco_specif.urgency == Some("low".to_string())
+                    {
                         continue 'ct;
                     }
                     processed.push(vuln);
