@@ -8,6 +8,14 @@ name = "binscan"
 path = "src/main.rs"
 
 [dependencies]
-tokio = { version = "1", features = ["full"] }
 library = { path = "../library" }
-clap = { version = "4.0", features = ["derive"] }
+tokio = { version = "1", features = ["full"] }
+
+# Command line parser
+clap = { version = "4.0", features = ["derive"] } 
+
+# CLI building Tools
+indicatif = "0.17" 
+owo-colors = "4"
+comfy-table = "7" 
+dialoguer = "0.11"
