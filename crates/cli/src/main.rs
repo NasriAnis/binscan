@@ -9,7 +9,7 @@ use std::time::Duration;
 async fn main() {
     // parse cmd input into struct
     let args = commands::parsing::run();
-    
+
     if Path::new(&args.source).exists() {
         let pb = ProgressBar::new_spinner();
         pb.set_style(
@@ -17,39 +17,42 @@ async fn main() {
                 .unwrap()
                 .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]),
         );
-        pb.enable_steady_tick(Duration::from_millis(80)); 
-        
+        pb.enable_steady_tick(Duration::from_millis(80));
+
         pb.set_message(format!("{}", "Extracting and analyzing binary...".bold()));
 
         let extraction_result = commands::extractor_cli::run(args.source.clone());
         let analyzer_result = commands::analyzer_cli::run(extraction_result);
 
         println!();
-        
+
         println!("Data from binary:");
         println!("Compiler: {}", analyzer_result.compiler);
         println!("Format: {:?}", analyzer_result.format);
         println!("Imports: {:?}", analyzer_result.imports);
         println!("Libs: {:?}", analyzer_result.libs);
         println!("Security info: {:?}", analyzer_result.security);
-        
+
         println!();
 
-        if args.api{ 
+        if args.api {
             pb.set_message(format!("{}", "Fetching matching CVEs from API...".bold()));
 
             let response = commands::request_cli::make(&args.ecosystem, analyzer_result).await;
             let parsed_data = commands::response_cli::parse(response);
             let processed = commands::process_cli::process(parsed_data, &args.ecosystem);
-            
+
             println!();
-            
+
             // let mut seen = HashSet::new();
             // processed.retain(|p| seen.insert(p.id.clone()));
-            
+
             println!("Info :");
-            for p in &processed{
-                println!("-------------------------{}-------------------------------", p.id);
+            for p in &processed {
+                println!(
+                    "-------------------------{}-------------------------------",
+                    p.id
+                );
                 println!("published : {:?}", p.published);
                 println!("details : {:?}", p.details);
                 println!("severity : {:?}", p.severity);

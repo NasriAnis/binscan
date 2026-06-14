@@ -118,7 +118,8 @@ pub fn process(data: Vec<Response>, eco: String) -> Vec<Vuln> {
 
     for res in data {
         'br: for vuln in res.vulns {
-            if seen.contains(&vuln.id) { // ← skip if already added
+            if seen.contains(&vuln.id) {
+                // ← skip if already added
                 continue;
             }
             'ct: for affect in &vuln.affected {
