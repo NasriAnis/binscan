@@ -8,14 +8,12 @@ pub async fn send(data: String) -> Result<String, reqwest::Error> {
     //     .build()?;
 
     let client = reqwest::Client::new();
-    let response = client
+    client
         .post(OS_API)
         .header("Content-Type", "application/json")
         .body(data)
         .send()
         .await?
         .text()
-        .await;
-
-    response
+        .await
 }

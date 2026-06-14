@@ -9,9 +9,8 @@ mod string;
 
 pub fn run(path_to_buf: String) -> Result<ExtractedModules, error::Error> {
     // Reads the entire contents of a file into a bytes vector.
-    let buffer;
-    match fs::read(path_to_buf) {
-        Ok(t) => buffer = t,
+    let buffer = match fs::read(path_to_buf) {
+        Ok(t) => t,
         _ => {
             return Err(error::Error::Malformed(
                 "Reading the specified buffer".to_string(),
@@ -19,13 +18,12 @@ pub fn run(path_to_buf: String) -> Result<ExtractedModules, error::Error> {
         }
     };
 
-    let extracted_strings: Vec<String>;
     let extracted_symbols: Vec<String>;
     let extracted_imports: Vec<String>;
     let extracted_security_info: SecurityInfo;
     let _file_type: FileType;
 
-    extracted_strings = string::extract(&buffer);
+    let extracted_strings = string::extract(&buffer);
 
     // match binary type using goblin
     match Object::parse(&buffer)? {
