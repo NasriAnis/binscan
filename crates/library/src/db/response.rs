@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
+use std::collections::HashSet;
 
 // Top-level response: { "vulns": [...] }
 #[derive(Serialize, Deserialize, Debug)]
@@ -85,11 +86,41 @@ pub fn parse(data: Vec<String>) -> Result<Vec<Response>> {
     Ok(vec_parsed)
 }
 
+// pub fn process(data: Vec<Response>, eco: String) -> Vec<Vuln> {
+//     let mut processed: Vec<Vuln> = Vec::new();
+
+//     for res in data {
+//         'br: for vuln in res.vulns {
+//             'ct: for affect in &vuln.affected {
+//                 if affect.package.ecosystem != eco {
+//                     continue 'ct;
+//                 }
+//                 if let Some(eco_specif) = &affect.ecosystem_specific {
+//                     if eco_specif.urgency == Some("unimportant".to_string())
+//                         || eco_specif.urgency == Some("medium".to_string())
+//                         || eco_specif.urgency == Some("not yet assigned".to_string())
+//                         || eco_specif.urgency == Some("low".to_string())
+//                     {
+//                         continue 'ct;
+//                     }
+//                     processed.push(vuln);
+//                     break 'br;
+//                 }
+//             }
+//         }
+//     }
+//     processed
+// }
+
 pub fn process(data: Vec<Response>, eco: String) -> Vec<Vuln> {
     let mut processed: Vec<Vuln> = Vec::new();
+    let mut seen: HashSet<String> = HashSet::new(); // ← track inside here
 
     for res in data {
         'br: for vuln in res.vulns {
+            if seen.contains(&vuln.id) { // ← skip if already added
+                continue;
+            }
             'ct: for affect in &vuln.affected {
                 if affect.package.ecosystem != eco {
                     continue 'ct;
@@ -102,6 +133,7 @@ pub fn process(data: Vec<Response>, eco: String) -> Vec<Vuln> {
                     {
                         continue 'ct;
                     }
+                    seen.insert(vuln.id.clone()); // ← mark as seen before pushing
                     processed.push(vuln);
                     break 'br;
                 }
