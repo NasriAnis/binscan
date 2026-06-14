@@ -20,7 +20,7 @@ pub fn run(args: ParsedArgs) -> ExtractedModules
         },
         Err(e) => {
             pb.finish();
-            println!("{}: {}", "Error in extraction".red().bold(), e.red().bold());
+            println!("{}: {}", "Error in extraction".red().bold(), e.red());
             panic!()
         }
     }
