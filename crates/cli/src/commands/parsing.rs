@@ -21,10 +21,11 @@ pub struct ParsedArgs {
     #[arg(
         short = 'e',
         long,
-        help = "Ecosystem, default: Debian13",
+        help = "Ecosystem",
+        default_value = "Debian:13",
         requires = "api"
     )]
-    pub ecosystem: Option<String>,
+    pub ecosystem: String,
 
     // saving report in the file specified after -r (optional)
     #[arg(short = 'r', long, help = "Path to save the report")]
