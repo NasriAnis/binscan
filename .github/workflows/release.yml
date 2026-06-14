@@ -86,11 +86,11 @@ jobs:
       # ── Build ────────────────────────────────────────────────────────────────
       - name: Build release binary (native)
         if: matrix.cross != true
-        run: cargo build --release --target ${{ matrix.target }}
+        run: cargo build --release --target ${{ matrix.target }} -p cli-binscan
 
       - name: Build release binary (cross)
         if: matrix.cross == true
-        run: cross build --release --target ${{ matrix.target }}
+        run: cross build --release --target ${{ matrix.target }} -p cli-binscan
 
       # ── Package ─────────────────────────────────────────────────────────────
       # Produce:  binscan-v0.1.0-x86_64-unknown-linux-gnu.tar.gz

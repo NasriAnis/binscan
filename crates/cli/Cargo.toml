@@ -1,5 +1,5 @@
 [package]
-name = "cli-frimware-analyzer"
+name = "cli-binscan"
 version = "0.1.0"
 edition = "2024"
 
