@@ -1,7 +1,6 @@
 use owo_colors::OwoColorize;
 use std::path::Path;
 mod commands;
-use indicatif;
 use indicatif::{ProgressBar, ProgressStyle};
 use std::time::Duration;
 
