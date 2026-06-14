@@ -1,40 +1,5 @@
 use serde::{Deserialize, Serialize};
-use serde_json::{Result, to_string};
-
-// #[derive(Serialize, Deserialize, Debug)]
-// pub struct DataInResponse {
-//     id: String,
-//     #[serde(default)]
-//     details: String
-// }
-
-// #[derive(Serialize, Deserialize, Debug)]
-// pub struct Response {
-//     #[serde(default)]
-//     vulns: Vec<DataInResponse>
-// }
-
-// pub fn parse(data: Vec<String>) -> Result<Vec<Response>> 
-// {
-//     let mut vec_parsed: Vec<Response> = Vec::new();
-//     for r in data {
-//         let parsed: Response = serde_json::from_str(&r)?;
-//         vec_parsed.push(parsed);
-//     }
-
-//     Ok(vec_parsed)
-// }
-
-// #[derive(Serialize, Deserialize, Debug)]
-// #[serde(rename_all = "lowercase")]   // handles simple cases automatically
-// pub enum Urgency {
-//     Unimportant,                      // deserializes from "unimportant"
-//     Low,                              // deserializes from "low"
-//     Medium,                           // deserializes from "medium"
-//     High,                             // deserializes from "high"
-//     #[serde(rename = "not yet assigned")]  // ← manual rename for multi-word
-//     NotYetAssigned,
-// }
+use serde_json::Result;
 
 // Top-level response: { "vulns": [...] }
 #[derive(Serialize, Deserialize, Debug)]

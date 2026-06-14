@@ -14,7 +14,7 @@ pub fn run(path_to_buf: String) ->  Result<ExtractedModules, error::Error>
     match fs::read(path_to_buf) {
         Ok(t) => buffer = t,
         _ => {
-            return Err(error::Error::Malformed("Unsupported file type".to_string()))
+            return Err(error::Error::Malformed("Error in reading the specified buffer".to_string()))
         }
     };
 
