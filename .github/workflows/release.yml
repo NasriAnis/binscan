@@ -1,0 +1,149 @@
+name: Release
+
+# Triggers ONLY when you push a version tag: git tag v0.1.0 && git push --tags
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+env:
+  CARGO_TERM_COLOR: always
+  BINARY_NAME: binscan   # <-- change this to match your [[bin]] name in Cargo.toml
+
+permissions:
+  contents: write  # needed to create GitHub Releases and upload assets
+
+jobs:
+  # ─── Build matrix ────────────────────────────────────────────────────────────
+  build:
+    name: Build · ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux x86_64 (glibc — most servers & desktops)
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            archive_ext: tar.gz
+
+          # Linux x86_64 (musl — static binary, runs anywhere, Alpine, Docker)
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+            archive_ext: tar.gz
+            musl: true
+
+          # Linux ARM64 (Raspberry Pi 4+, AWS Graviton, etc.)
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+            archive_ext: tar.gz
+            cross: true
+
+          # Windows x86_64
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            archive_ext: zip
+            exe_suffix: .exe
+
+          # macOS Apple Silicon
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            archive_ext: tar.gz
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # ── Toolchain setup ──────────────────────────────────────────────────────
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      # musl needs the musl-tools package
+      - name: Install musl-tools (Linux musl only)
+        if: matrix.musl == true
+        run: sudo apt-get install -y musl-tools
+
+      # cross handles non-native Linux targets (e.g. aarch64)
+      - name: Install cross (for cross-compilation)
+        if: matrix.cross == true
+        run: cargo install cross --git https://github.com/cross-rs/cross
+
+      # ── Cache ────────────────────────────────────────────────────────────────
+      - name: Cache Cargo registry & build artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/
+          key: ${{ runner.os }}-${{ matrix.target }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.target }}-cargo-
+
+      # ── Build ────────────────────────────────────────────────────────────────
+      - name: Build release binary (native)
+        if: matrix.cross != true
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Build release binary (cross)
+        if: matrix.cross == true
+        run: cross build --release --target ${{ matrix.target }}
+
+      # ── Package ─────────────────────────────────────────────────────────────
+      # Produce:  binscan-v0.1.0-x86_64-unknown-linux-gnu.tar.gz
+      - name: Package binary (Unix)
+        if: matrix.archive_ext == 'tar.gz'
+        shell: bash
+        run: |
+          BIN=target/${{ matrix.target }}/release/${{ env.BINARY_NAME }}
+          ARCHIVE=${{ env.BINARY_NAME }}-${{ github.ref_name }}-${{ matrix.target }}.tar.gz
+          tar -czf "$ARCHIVE" -C "$(dirname $BIN)" "$(basename $BIN)"
+          echo "ASSET=$ARCHIVE" >> $GITHUB_ENV
+
+      - name: Package binary (Windows)
+        if: matrix.archive_ext == 'zip'
+        shell: pwsh
+        run: |
+          $bin  = "target\${{ matrix.target }}\release\${{ env.BINARY_NAME }}.exe"
+          $archive = "${{ env.BINARY_NAME }}-${{ github.ref_name }}-${{ matrix.target }}.zip"
+          Compress-Archive -Path $bin -DestinationPath $archive
+          "ASSET=$archive" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      # ── Upload artifact (passed to the release job) ──────────────────────────
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BINARY_NAME }}-${{ matrix.target }}
+          path: ${{ env.ASSET }}
+          if-no-files-found: error
+
+  # ─── Create GitHub Release ───────────────────────────────────────────────────
+  release:
+    name: Publish GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout (for tag info / CHANGELOG)
+        uses: actions/checkout@v4
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+          merge-multiple: true
+
+      - name: List artifacts
+        run: ls -lh artifacts/
+
+      - name: Create GitHub Release and upload binaries
+        uses: softprops/action-gh-release@v2
+        with:
+          # Auto-generate release notes from commits since last tag
+          generate_release_notes: true
+          # Mark as pre-release if tag contains "-alpha", "-beta", "-rc"
+          prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-rc') }}
+          files: artifacts/*
