@@ -1,6 +1,6 @@
 use library::{BinaryData, db::request};
 use tokio::net::TcpStream;
-use tokio::time::{timeout, Duration};
+use tokio::time::{Duration, timeout};
 
 pub async fn make(ecosystem: &str, binary_data: BinaryData) -> Vec<String> {
     request::make(binary_data, ecosystem.to_owned()).await

@@ -1,4 +1,4 @@
-use tokio::time::{sleep, Duration};
+use tokio::time::{Duration, sleep};
 
 use crate::{
     BinaryData,
@@ -10,10 +10,10 @@ pub async fn make(data: BinaryData, eco: String) -> Vec<String> {
     // println!("JSON body: {:?}", json_body);
 
     let mut responses: Vec<String> = Vec::new();
-    
+
     for r in json_body {
         let mut result: Option<String> = None;
-    
+
         for attempt in 1..=3 {
             match make_req::send(&r).await {
                 Ok(t) => {
