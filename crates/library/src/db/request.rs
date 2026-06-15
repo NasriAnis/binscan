@@ -1,3 +1,5 @@
+use tokio::time::{sleep, Duration};
+
 use crate::{
     BinaryData,
     db::{json_req, make_req},
@@ -20,6 +22,7 @@ pub async fn make(data: BinaryData, eco: String) -> Vec<String> {
                 }
                 Err(e) => {
                     eprintln!("[attempt {}/3] Request failed: {}", attempt, e);
+                    sleep(Duration::from_millis(500)).await;
                 }
             }
         }
