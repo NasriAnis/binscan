@@ -8,9 +8,26 @@ pub async fn make(data: BinaryData, eco: String) -> Vec<String> {
     // println!("JSON body: {:?}", json_body);
 
     let mut responses: Vec<String> = Vec::new();
+    
     for r in json_body {
-        let res = make_req::send(r).await.unwrap();
-        responses.push(res);
+        let mut result: Option<String> = None;
+    
+        for attempt in 1..=3 {
+            match make_req::send(&r).await {
+                Ok(t) => {
+                    result = Some(t);
+                    break;
+                }
+                Err(e) => {
+                    eprintln!("[attempt {}/3] Request failed: {}", attempt, e);
+                }
+            }
+        }
+
+        match result {
+            Some(t) => responses.push(t),
+            None => eprintln!("All 3 attempts failed for: {}", r),
+        }
     }
     responses
 }

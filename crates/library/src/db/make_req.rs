@@ -1,4 +1,4 @@
-pub async fn send(data: String) -> Result<String, reqwest::Error> {
+pub async fn send(data: &str) -> Result<String, reqwest::Error> {
     const OS_API: &str = "https://api.osv.dev/v1/query";
 
     // debugging purpose only (test request in a proxy):
@@ -11,7 +11,7 @@ pub async fn send(data: String) -> Result<String, reqwest::Error> {
     client
         .post(OS_API)
         .header("Content-Type", "application/json")
-        .body(data)
+        .body(data.to_owned())
         .send()
         .await?
         .text()
