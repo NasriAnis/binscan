@@ -34,7 +34,7 @@ async fn main() {
 
         println!();
 
-        if args.api {
+        if args.api && commands::request_cli::has_internet().await {
             pb.set_message(format!("{}", "Fetching matching CVEs from API...".bold()));
 
             let response = commands::request_cli::make(&args.ecosystem, analyzer_result).await;
