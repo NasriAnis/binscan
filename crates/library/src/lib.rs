@@ -19,7 +19,6 @@ pub enum SecurityInfo {
 pub struct ExtractedModules {
     pub file_type: FileType,
     pub strings: Vec<String>,
-    pub symbols: Vec<String>,
     pub imports: Vec<String>,
     pub security: SecurityInfo,
 }
@@ -31,6 +30,7 @@ pub struct BinaryData {
     pub libs: Vec<String>,
     pub imports: Vec<String>,
     pub security: SecurityInfo,
+
     // future add ons
     // pub binary: String,
     // pub detected_components: Vec<String>,

@@ -18,7 +18,7 @@ pub fn run(path_to_buf: String) -> Result<ExtractedModules, error::Error> {
         }
     };
 
-    let extracted_symbols: Vec<String>;
+    let extracted_symbols: Option<Vec<String>>;
     let extracted_imports: Vec<String>;
     let extracted_security_info: SecurityInfo;
     let _file_type: FileType;
@@ -31,15 +31,15 @@ pub fn run(path_to_buf: String) -> Result<ExtractedModules, error::Error> {
             _file_type = FileType::ELF;
             let (imports, symbols, security) = elf::extract(&buffer);
             extracted_imports = imports;
-            extracted_symbols = symbols;
+            extracted_symbols = Some(symbols);
             extracted_security_info = SecurityInfo::Elf(security);
         }
 
         Object::PE(_) => {
             _file_type = FileType::PE;
-            let (imports, symbols, security) = pe::extract(&buffer);
+            let (imports, security) = pe::extract(&buffer);
             extracted_imports = imports;
-            extracted_symbols = symbols;
+            extracted_symbols = None;
             extracted_security_info = SecurityInfo::Pe(security);
         }
 
@@ -50,14 +50,17 @@ pub fn run(path_to_buf: String) -> Result<ExtractedModules, error::Error> {
     let extracted = ExtractedModules {
         file_type: _file_type,
         strings: extracted_strings,
-        symbols: extracted_symbols,
-        imports: extracted_imports,
+        imports: {
+            let mut combined = extracted_imports;
+            combined.extend(extracted_symbols.unwrap_or_default());
+            combined
+        },
         security: extracted_security_info,
     };
 
     // debuging purpose
-    // println!("Extracted Strings : \n{:?}\n\n extracted symbols : \n{:?}\n\n Extracted imports : \n{:?}",
-    //             extracted.strings, extracted.symbols, extracted.imports);
+    // println!("Extracted Strings : \n{:?}\n\n Extracted imports : \n{:?}",
+    //             extracted.strings, extracted.imports);
 
     Ok(extracted)
 }
