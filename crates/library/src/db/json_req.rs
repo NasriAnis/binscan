@@ -6,6 +6,12 @@ pub fn make(data: &BinaryData, eco: String) -> Vec<String> {
 
     for libs in &data.libs {
         let l: Vec<&str> = libs.split("_").collect();
+
+        let size: usize = 2;
+        if l.len() != size {
+            continue;
+        }
+        
         let body = json!({
             "package": {
                 "name": l[0].to_lowercase(),
