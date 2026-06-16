@@ -54,9 +54,20 @@ async fn main() {
                         "-------------------------{}-------------------------------",
                         p.id
                     );
-                    println!("published : {:?}", p.published);
-                    println!("details : {:?}", p.details);
-                    println!("severity : {:?}", p.severity);
+
+                    let pub_date: String = match p.published.as_ref() {
+                        Some(t) => t.to_string(),
+                        None => "Published date not shown".to_string(),
+                    };
+                    let det: String = match p.details.as_ref() {
+                        Some(t) => t.to_string(),
+                        None => "Published date not shown".to_string(),
+                    };
+                    let sev: String = format!("{:?}", p.severity);
+
+                    println!("published : {:?}", pub_date);
+                    println!("details : {:?}", det);
+                    println!("severity : {:?}", sev);
                 }
             }
         } else {

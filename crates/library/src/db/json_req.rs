@@ -9,7 +9,7 @@ pub fn make(data: &BinaryData, eco: String) -> Vec<String> {
     for libs in &data.libs {
         let l: Vec<&str> = libs.split("_").collect();
 
-        if l[0] != "GCC".to_string() {
+        if l[0] != "GLIBC" {
             continue;
         };
 
