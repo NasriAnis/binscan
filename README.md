@@ -26,6 +26,6 @@ And use it from anywhere.
 You can get help using this command : `binscan --help`, All the flags will be listed.
 
 example:
-![BinScan Demo](assets/binscan.mp4)
+https://github.com/user-attachments/assets/f6cc3b0e-d56a-46d5-874d-c2d88b893156
 
 Note that the severity flag is not working yet.
