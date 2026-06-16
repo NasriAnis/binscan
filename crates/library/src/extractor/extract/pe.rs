@@ -1,4 +1,10 @@
+use std::panic;
+
 use goblin::pe::PE;
+use pelite::pe64::Pe as Pe64;
+use pelite::pe32::Pe as Pe32;
+use pelite::pe64::imports::Import as Import64;
+use pelite::pe32::imports::Import as Import32;
 
 use crate::PeSecurityInfo;
 
@@ -8,42 +14,53 @@ const IMAGE_DLLCHARACTERISTICS_NX_COMPAT: u16 = 0x0100;
 const IMAGE_DLLCHARACTERISTICS_NO_SEH: u16 = 0x0400;
 const IMAGE_DLLCHARACTERISTICS_GUARD_CF: u16 = 0x4000;
 
-pub fn extract(buffer: &[u8]) -> (Vec<String>, Vec<String>, PeSecurityInfo) {
+pub fn extract(buffer: &[u8]) -> (Vec<String>, PeSecurityInfo) {
+    let import_result = match extract_pe_imports(buffer){
+        Ok(t) => t,
+        Err(_) => panic!(),
+    };
+    
     (
-        extract_pe_imports(buffer),
-        extract_pe_symbols(buffer),
+        import_result,
         extract_pe_security(buffer),
     )
 }
 
-fn extract_pe_symbols(buffer: &[u8]) -> Vec<String> {
-    let mut result: Vec<String> = Vec::new();
-    let pe = PE::parse(buffer).unwrap();
+fn extract_pe_imports(buffer: &[u8]) -> Result<Vec<String>, pelite::Error> {
+    let mut result = Vec::new();
 
-    // Exported symbols
-    for export in &pe.exports {
-        let name = export.name.unwrap_or("<unnamed>");
-        result.push(format!("[EXPORT] {name}"));
+    // Try PE64 first, fall back to PE32
+    if let Ok(pe) = pelite::pe64::PeFile::from_bytes(buffer) {
+        for desc in pe.imports()? {
+            let dll = desc.dll_name()?;
+            for import in desc.int()? {
+                match import? {
+                    Import64::ByName { name, .. } => {
+                        result.push(format!("{}|{}", name, dll));
+                    }
+                    Import64::ByOrdinal { ord } => {
+                        result.push(format!("{}|{}", ord, dll));
+                    }
+                }
+            }
+        }
+    } else if let Ok(pe) = pelite::pe32::PeFile::from_bytes(buffer) {
+        for desc in pe.imports()? {
+            let dll = desc.dll_name()?;
+            for import in desc.int()? {
+                match import? {
+                    Import32::ByName { name, .. } => {
+                        result.push(format!("{}|{}", name, dll));
+                    }
+                    Import32::ByOrdinal { ord } => {
+                        result.push(format!("{}|{}", ord, dll));
+                    }
+                }
+            }
+        }
     }
 
-    // Imported symbols
-    for import in &pe.imports {
-        result.push(format!("[IMPORT] {} (from {})", import.name, import.dll));
-    }
-
-    result
-}
-
-fn extract_pe_imports(buffer: &[u8]) -> Vec<String> {
-    let mut result: Vec<String> = Vec::new();
-    let pe = PE::parse(buffer).unwrap();
-
-    // DLL dependencies
-    for lib in &pe.libraries {
-        result.push(lib.to_string());
-    }
-
-    result
+    Ok(result)
 }
 
 pub fn extract_pe_security(buffer: &[u8]) -> PeSecurityInfo {
