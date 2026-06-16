@@ -30,7 +30,6 @@ pub struct BinaryData {
     pub libs: Vec<String>,
     pub imports: Vec<String>,
     pub security: SecurityInfo,
-
     // future add ons
     // pub binary: String,
     // pub detected_components: Vec<String>,

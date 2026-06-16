@@ -1,10 +1,10 @@
 use std::panic;
 
 use goblin::pe::PE;
-use pelite::pe64::Pe as Pe64;
 use pelite::pe32::Pe as Pe32;
-use pelite::pe64::imports::Import as Import64;
 use pelite::pe32::imports::Import as Import32;
+use pelite::pe64::Pe as Pe64;
+use pelite::pe64::imports::Import as Import64;
 
 use crate::PeSecurityInfo;
 
@@ -15,15 +15,12 @@ const IMAGE_DLLCHARACTERISTICS_NO_SEH: u16 = 0x0400;
 const IMAGE_DLLCHARACTERISTICS_GUARD_CF: u16 = 0x4000;
 
 pub fn extract(buffer: &[u8]) -> (Vec<String>, PeSecurityInfo) {
-    let import_result = match extract_pe_imports(buffer){
+    let import_result = match extract_pe_imports(buffer) {
         Ok(t) => t,
         Err(_) => panic!(),
     };
-    
-    (
-        import_result,
-        extract_pe_security(buffer),
-    )
+
+    (import_result, extract_pe_security(buffer))
 }
 
 fn extract_pe_imports(buffer: &[u8]) -> Result<Vec<String>, pelite::Error> {

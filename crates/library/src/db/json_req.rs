@@ -11,7 +11,7 @@ pub fn make(data: &BinaryData, eco: String) -> Vec<String> {
         if l.len() != size {
             continue;
         }
-        
+
         let body = json!({
             "package": {
                 "name": l[0].to_lowercase(),
