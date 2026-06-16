@@ -2,14 +2,14 @@ pub mod analyzer;
 pub mod db;
 pub mod extractor;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum FileType {
     PE,
     ELF,
     Other,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum SecurityInfo {
     Elf(ElfSecurityInfo),
     Pe(PeSecurityInfo),
@@ -37,7 +37,7 @@ pub struct BinaryData {
     // pub build_info: Vec<String>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct ElfSecurityInfo {
     pub pie: bool,
     pub nx: bool,
@@ -46,7 +46,7 @@ pub struct ElfSecurityInfo {
     pub fortify: bool,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct PeSecurityInfo {
     pub aslr: bool,
     pub dep: bool,

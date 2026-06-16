@@ -1,3 +1,4 @@
+use library::FileType;
 use owo_colors::OwoColorize;
 use std::path::Path;
 mod commands;
@@ -21,7 +22,7 @@ async fn main() {
         pb.set_message(format!("{}", "Extracting and analyzing binary...".bold()));
 
         let extraction_result = commands::extractor_cli::run(args.source.clone());
-        let analyzer_result = commands::analyzer_cli::run(extraction_result);
+        let analyzer_result = commands::analyzer_cli::run(&extraction_result);
 
         println!();
 
@@ -34,28 +35,34 @@ async fn main() {
 
         println!();
 
-        if args.api && commands::request_cli::has_internet().await {
-            pb.set_message(format!("{}", "Fetching matching CVEs from API...".bold()));
+        if extraction_result.file_type == FileType::ELF {
+            if args.api && commands::request_cli::has_internet().await {
+                pb.set_message(format!("{}", "Fetching matching CVEs from API...".bold()));
 
-            let response = commands::request_cli::make(&args.ecosystem, analyzer_result).await;
-            let parsed_data = commands::response_cli::parse(response);
-            let processed = commands::process_cli::process(parsed_data, &args.ecosystem);
+                let response = commands::request_cli::make(&args.ecosystem, analyzer_result).await;
+                let parsed_data = commands::response_cli::parse(response);
+                let processed = commands::process_cli::process(parsed_data, &args.ecosystem);
 
-            println!();
+                println!();
 
-            // let mut seen = HashSet::new();
-            // processed.retain(|p| seen.insert(p.id.clone()));
+                // let mut seen = HashSet::new();
+                // processed.retain(|p| seen.insert(p.id.clone()));
 
-            println!("Info :");
-            for p in &processed {
-                println!(
-                    "-------------------------{}-------------------------------",
-                    p.id
-                );
-                println!("published : {:?}", p.published);
-                println!("details : {:?}", p.details);
-                println!("severity : {:?}", p.severity);
+                println!("Info :");
+                for p in &processed {
+                    println!(
+                        "-------------------------{}-------------------------------",
+                        p.id
+                    );
+                    println!("published : {:?}", p.published);
+                    println!("details : {:?}", p.details);
+                    println!("severity : {:?}", p.severity);
+                }
             }
+        } else {
+            println!("{}", "Cannot use API for PE files".red().bold());
+            print!("-> ");
+            println!("{}", "This will be implemented in futur versions".bold())
         }
         pb.finish_and_clear();
         println!();
