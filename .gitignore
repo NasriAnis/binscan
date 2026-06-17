@@ -1,2 +1,4 @@
+.gitignore
 /target
 ./test_binaries
+Todo.txt
