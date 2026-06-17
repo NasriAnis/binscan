@@ -1,0 +1,107 @@
+# ELF Binary Library Fingerprint Patterns
+# Format: regex_pattern|package_name|osv_ecosystem
+# - Regex capture group 1 = version string (optional on some entries)
+# - ecosystem: leave empty to query OSV across all ecosystems
+# - Lines starting with # are comments
+
+# ─── TLS / CRYPTO ────────────────────────────────────────────────────────────
+OpenSSL[/ ](\d+\.\d+[\.\d]*[a-z]?)|openssl|
+LibreSSL (\d+\.\d+\.\d+)|libressl|
+mbedTLS (\d+\.\d+\.\d+)|mbedtls|
+wolfSSL[/ ](\d+\.\d+\.\d+)|wolfssl|
+GnuTLS (\d+\.\d+\.\d+)|gnutls|
+crypto\+\+ (\d+\.\d+\.\d+)|libcrypto++|
+libsodium (\d+\.\d+\.\d+)|libsodium|
+Nettle (\d+\.\d+)|nettle|
+NSS (\d+\.\d+\.\d+)|nss|
+
+# ─── HTTP / NETWORK ──────────────────────────────────────────────────────────
+libcurl/(\d+\.\d+\.\d+)|curl|
+nghttp2/(\d+\.\d+\.\d+)|nghttp2|
+nghttp3/(\d+\.\d+\.\d+)|nghttp3|
+ngtcp2/(\d+\.\d+\.\d+)|ngtcp2|
+c-ares[/ ](\d+\.\d+\.\d+)|c-ares|
+libidn2/(\d+\.\d+\.\d+)|libidn2|
+libidn/(\d+\.\d+\.\d+)|libidn|
+libpsl/(\d+\.\d+\.\d+)|libpsl|
+libssh2/(\d+\.\d+\.\d+)|libssh2|
+libssh/(\d+\.\d+\.\d+)|libssh|
+libuv[/ ]v?(\d+\.\d+\.\d+)|libuv1|
+libwebsockets-(\d+\.\d+\.\d+)|libwebsockets|
+microhttpd[/ ](\d+\.\d+\.\d+)|libmicrohttpd|
+
+# ─── COMPRESSION ─────────────────────────────────────────────────────────────
+zlib[/ ](\d+\.\d+\.\d+)|zlib|
+zlib-ng[/ ](\d+\.\d+\.\d+)|zlib-ng|
+brotli/(\d+\.\d+\.\d+)|brotli|
+\bLZ4 (\d+\.\d+\.\d+)|liblz4|
+\blz4[/ ](\d+\.\d+\.\d+)|liblz4|
+\bZSTD[/ ]?v?(\d+\.\d+\.\d+)|libzstd|
+zstd[/ ]v?(\d+\.\d+\.\d+)|libzstd|
+bzip2[/ ](\d+\.\d+\.\d+)|bzip2|
+liblzma[/ ](\d+\.\d+\.\d+)|xz-utils|
+xz[/ ](\d+\.\d+\.\d+)|xz-utils|
+snappy[/ ](\d+\.\d+\.\d+)|libsnappy|
+
+# ─── XML / PARSING ───────────────────────────────────────────────────────────
+libxml2 version (\d+\.\d+\.\d+)|libxml2|
+libxml2-(\d+\.\d+\.\d+)|libxml2|
+expat[_/ ](\d+\.\d+\.\d+)|expat|
+pugixml[/ ](\d+\.\d+\.\d+)|pugixml|
+tinyxml2[/ ](\d+\.\d+\.\d+)|tinyxml2|
+rapidjson[/ ](\d+\.\d+\.\d+)|rapidjson|
+cJSON[/ ](\d+\.\d+\.\d+)|cjson|
+jansson[/ ](\d+\.\d+\.\d+)|jansson|
+yaml-cpp[/ ](\d+\.\d+\.\d+)|yaml-cpp|
+libyaml[/ ](\d+\.\d+\.\d+)|libyaml|
+
+# ─── IMAGE / MEDIA CODECS ────────────────────────────────────────────────────
+libpng version (\d+\.\d+\.\d+)|libpng16|
+libpng-(\d+\.\d+\.\d+)|libpng16|
+libjpeg-turbo (\d+\.\d+\.\d+)|libjpeg-turbo|
+libjpeg[/ ](\d+[a-z]?)|libjpeg|
+libwebp[/ ](\d+\.\d+\.\d+)|libwebp|
+libtiff, Version (\d+\.\d+\.\d+)|libtiff|
+GIFLIB[/ ](\d+\.\d+\.\d+)|giflib|
+OpenJPEG (\d+\.\d+\.\d+)|openjpeg2|
+libjxl[/ ](\d+\.\d+\.\d+)|libjxl|
+
+# ─── MULTIMEDIA ──────────────────────────────────────────────────────────────
+libavcodec[/ ](\d+\.\d+\.\d+)|ffmpeg|
+libavformat[/ ](\d+\.\d+\.\d+)|ffmpeg|
+libavutil[/ ](\d+\.\d+\.\d+)|ffmpeg|
+x264 core:(\d+)|x264|
+x265[/ ](\d+\.\d+)|x265|
+libvpx[/ ]v?(\d+\.\d+\.\d+)|libvpx|
+libopus[/ ](\d+\.\d+\.\d+)|opus|
+libFLAC (\d+\.\d+\.\d+)|flac|
+Vorbis I (\d+\.\d+\.\d+)|libvorbis|
+
+# ─── DATABASE ────────────────────────────────────────────────────────────────
+SQLite version (\d+\.\d+\.\d+)|sqlite3|
+SQLite (\d+\.\d+\.\d+)|sqlite3|
+PostgreSQL (\d+\.\d+\.\d+)|postgresql|
+libpq[/ ](\d+\.\d+\.\d+)|libpq|
+mariadb-connector-c (\d+\.\d+\.\d+)|mariadb-connector-c|
+leveldb[/ ](\d+\.\d+)|leveldb|
+rocksdb[/ ](\d+\.\d+\.\d+)|rocksdb|
+
+# ─── Runtimes / Engines ──────────────────────────────────────────────────────
+Python (\d+\.\d+\.\d+)|python3|
+Lua (\d+\.\d+\.\d+)|lua5.4|
+PCRE2 version (\d+\.\d+)|pcre2|
+PCRE version (\d+\.\d+)|pcre3|
+
+# ─── SYSTEM / MISC ───────────────────────────────────────────────────────────
+libevent[/ ](\d+\.\d+\.\d+)|libevent|
+boost[/ ](\d+\.\d+\.\d+)|boost|
+GLib[/ ](\d+\.\d+\.\d+)|glib2.0|
+libffi[/ ](\d+\.\d+\.\d+)|libffi|
+pcap[/ ](\d+\.\d+\.\d+)|libpcap|
+openldap[/ ](\d+\.\d+\.\d+)|openldap|
+Kerberos[/ ](\d+\.\d+)|krb5|
+libgcrypt[/ ](\d+\.\d+\.\d+)|libgcrypt20|
+dbus[/ ](\d+\.\d+\.\d+)|dbus|
+libzip[/ ](\d+\.\d+\.\d+)|libzip|
+libarchive[/ ](\d+\.\d+\.\d+)|libarchive|
+libgit2 v?(\d+\.\d+\.\d+)|libgit2|

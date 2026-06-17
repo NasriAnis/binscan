@@ -1,0 +1,229 @@
+# PE Binary Library Fingerprint Patterns
+# Format: regex_pattern|package_name|osv_ecosystem
+# - Regex capture group 1 = version string (optional on some entries)
+# - ecosystem: leave empty to query OSV across all ecosystems
+# - Lines starting with # are comments
+
+# ─── TLS / CRYPTO ────────────────────────────────────────────────────────────
+OpenSSL[/ ](\d+\.\d+[\.\d]*[a-z]?)|openssl|
+LibreSSL (\d+\.\d+\.\d+)|libressl|
+mbedTLS (\d+\.\d+\.\d+)|mbedtls|
+PolarSSL (\d+\.\d+\.\d+)|polarssl|
+wolfSSL[/ ](\d+\.\d+\.\d+)|wolfssl|
+CyaSSL[/ ](\d+\.\d+\.\d+)|wolfssl|
+GnuTLS (\d+\.\d+\.\d+)|gnutls|
+Crypto\+\+ (\d+\.\d+\.\d+)|cryptopp|
+libsodium (\d+\.\d+\.\d+)|libsodium|
+Nettle (\d+\.\d+)|nettle|
+NSS (\d+\.\d+\.\d+)|nss|
+GOST ENGINE (\d+\.\d+\.\d+)|gost-engine|
+
+# ─── HTTP / NETWORK ──────────────────────────────────────────────────────────
+libcurl/(\d+\.\d+\.\d+)|curl|
+nghttp2/(\d+\.\d+\.\d+)|nghttp2|
+nghttp3/(\d+\.\d+\.\d+)|nghttp3|
+ngtcp2/(\d+\.\d+\.\d+)|ngtcp2|
+c-ares[/ ](\d+\.\d+\.\d+)|c-ares|
+libidn2/(\d+\.\d+\.\d+)|libidn2|
+libidn/(\d+\.\d+\.\d+)|libidn|
+libpsl/(\d+\.\d+\.\d+)|libpsl|
+libssh2/(\d+\.\d+\.\d+)|libssh2|
+libssh/(\d+\.\d+\.\d+)|libssh|
+libuv[/ ]v?(\d+\.\d+\.\d+)|libuv|
+libuv v(\d+\.\d+\.\d+)|libuv|
+libwebsockets-(\d+\.\d+\.\d+)|libwebsockets|
+libwebsockets (\d+\.\d+\.\d+)|libwebsockets|
+Mongoose/(\d+\.\d+)|mongoose|
+microhttpd[/ ](\d+\.\d+\.\d+)|libmicrohttpd|
+neon[/ ](\d+\.\d+\.\d+)|neon|
+
+# ─── COMPRESSION ─────────────────────────────────────────────────────────────
+zlib[/ ](\d+\.\d+\.\d+)|zlib|
+inflate (\d+\.\d+\.\d+)|zlib|
+zlib-ng[/ ](\d+\.\d+\.\d+)|zlib-ng|
+brotli/(\d+\.\d+\.\d+)|brotli|
+\bLZ4 (\d+\.\d+\.\d+)|lz4|
+\blz4[/ ](\d+\.\d+\.\d+)|lz4|
+\bZSTD[/ ]?v?(\d+\.\d+\.\d+)|zstd|
+Zstandard v?(\d+\.\d+\.\d+)|zstd|
+zstd[/ ]v?(\d+\.\d+\.\d+)|zstd|
+bzip2[/ ](\d+\.\d+\.\d+)|bzip2|
+liblzma[/ ](\d+\.\d+\.\d+)|xz|
+xz[/ ](\d+\.\d+\.\d+)|xz|
+snappy[/ ](\d+\.\d+\.\d+)|snappy|
+libdeflate (\d+\.\d+)|libdeflate|
+minizip[/ ](\d+\.\d+\.\d+)|minizip|
+Blosc2? (\d+\.\d+\.\d+)|blosc|
+
+# ─── XML / PARSING ───────────────────────────────────────────────────────────
+libxml2 version (\d+\.\d+\.\d+)|libxml2|
+libxml2-(\d+\.\d+\.\d+)|libxml2|
+expat[_/ ](\d+\.\d+\.\d+)|expat|
+expat_(\d+\.\d+\.\d+)|expat|
+pugixml[/ ](\d+\.\d+\.\d+)|pugixml|
+tinyxml2[/ ](\d+\.\d+\.\d+)|tinyxml2|
+rapidjson[/ ](\d+\.\d+\.\d+)|rapidjson|
+cJSON[/ ](\d+\.\d+\.\d+)|cjson|
+jansson[/ ](\d+\.\d+\.\d+)|jansson|
+yaml-cpp[/ ](\d+\.\d+\.\d+)|yaml-cpp|
+libyaml[/ ](\d+\.\d+\.\d+)|libyaml|
+tomlc? (\d+\.\d+)|toml|
+
+# ─── IMAGE / MEDIA CODECS ────────────────────────────────────────────────────
+libpng version (\d+\.\d+\.\d+)|libpng|
+libpng-(\d+\.\d+\.\d+)|libpng|
+PNG lib version (\d+\.\d+\.\d+)|libpng|
+libjpeg-turbo (\d+\.\d+\.\d+)|libjpeg-turbo|
+LIBJPEG_TURBO_VERSION (\d+\.\d+\.\d+)|libjpeg-turbo|
+libjpeg[/ ](\d+[a-z]?)|libjpeg|
+libwebp[/ ](\d+\.\d+\.\d+)|libwebp|
+WebP version (\d+\.\d+\.\d+)|libwebp|
+libtiff, Version (\d+\.\d+\.\d+)|libtiff|
+libtiff[/ ](\d+\.\d+\.\d+)|libtiff|
+GIFLIB[/ ](\d+\.\d+\.\d+)|giflib|
+giflib[/ ](\d+\.\d+\.\d+)|giflib|
+JasPer version (\d+\.\d+\.\d+)|jasper|
+OpenJPEG (\d+\.\d+\.\d+)|openjpeg|
+libjxl[/ ](\d+\.\d+\.\d+)|libjxl|
+libavif[/ ](\d+\.\d+\.\d+)|libavif|
+libheif[/ ](\d+\.\d+\.\d+)|libheif|
+SVG[Tt]iny[/ ](\d+\.\d+)|svgtiny|
+
+# ─── MULTIMEDIA ──────────────────────────────────────────────────────────────
+Lavc(\d+\.\d+\.\d+)|ffmpeg|
+libavcodec[/ ](\d+\.\d+\.\d+)|ffmpeg|
+libavformat[/ ](\d+\.\d+\.\d+)|ffmpeg|
+libavutil[/ ](\d+\.\d+\.\d+)|ffmpeg|
+libswscale[/ ](\d+\.\d+\.\d+)|ffmpeg|
+x264 core:(\d+)|x264|
+x264[/ ](\d+\.\d+\.\d+)|x264|
+x265[/ ](\d+\.\d+)|x265|
+HEVC encoder version (\d+\.\d+)|x265|
+libvpx[/ ]v?(\d+\.\d+\.\d+)|libvpx|
+libopus[/ ](\d+\.\d+\.\d+)|opus|
+opus[/ ](\d+\.\d+\.\d+)|opus|
+libFLAC (\d+\.\d+\.\d+)|flac|
+FLAC (\d+\.\d+\.\d+)|flac|
+Vorbis I (\d+\.\d+\.\d+)|libvorbis|
+libvorbis[/ ](\d+\.\d+\.\d+)|libvorbis|
+libogg[/ ](\d+\.\d+\.\d+)|libogg|
+LAME[/ ]?(\d+\.\d+\.\d+)|lame|
+libmp3lame[/ ](\d+\.\d+\.\d+)|lame|
+libspeex[/ ](\d+\.\d+\.\d+)|speex|
+theora[/ ](\d+\.\d+\.\d+)|libtheora|
+libmpg123[/ ](\d+\.\d+\.\d+)|mpg123|
+SoundTouch[/ ]v?(\d+\.\d+\.\d+)|soundtouch|
+RtAudio[/ ](\d+\.\d+\.\d+)|rtaudio|
+PortAudio[/ ]V(\d+)|portaudio|
+
+# ─── DATABASE ────────────────────────────────────────────────────────────────
+SQLite version (\d+\.\d+\.\d+)|sqlite|
+SQLite (\d+\.\d+\.\d+)|sqlite|
+-- SQLite[/ ](\d+\.\d+\.\d+)|sqlite|
+PostgreSQL (\d+\.\d+\.\d+)|postgresql|
+libpq[/ ](\d+\.\d+\.\d+)|postgresql|
+MariaDB Connector C (\d+\.\d+\.\d+)|mariadb-connector-c|
+MySQL Connector C (\d+\.\d+\.\d+)|mysql-connector-c|
+leveldb[/ ](\d+\.\d+)|leveldb|
+rocksdb[/ ](\d+\.\d+\.\d+)|rocksdb|
+lmdb[/ ](\d+\.\d+\.\d+)|lmdb|
+MDB_VERSION_STRING[/ ](\d+\.\d+\.\d+)|lmdb|
+berkeleydb[/ ](\d+\.\d+\.\d+)|db|
+
+# ─── REGEX ENGINES ───────────────────────────────────────────────────────────
+PCRE2 version (\d+\.\d+)|pcre2|
+PCRE version (\d+\.\d+)|pcre|
+re2[/ ](\d+\.\d+\.\d+)|re2|
+oniguruma version (\d+\.\d+\.\d+)|oniguruma|
+oniguruma[/ ](\d+\.\d+\.\d+)|oniguruma|
+
+# ─── SCRIPTING / RUNTIMES ────────────────────────────────────────────────────
+Python (\d+\.\d+\.\d+)|python|
+Python/(\d+\.\d+\.\d+)|python|
+Lua (\d+\.\d+\.\d+)|lua|
+LuaJIT (\d+\.\d+\.\d+)|luajit|
+LuaJIT-(\d+\.\d+\.\d+)|luajit|
+duktape (\d+\.\d+\.\d+)|duktape|
+QuickJS version (\d+\.\d+-\d+)|quickjs|
+mruby (\d+\.\d+\.\d+)|mruby|
+Tcl (\d+\.\d+\.\d+)|tcl|
+Perl v?(\d+\.\d+\.\d+)|perl|
+PHP[/ ](\d+\.\d+\.\d+)|php|
+Ruby (\d+\.\d+\.\d+)|ruby|
+v8[/ ](\d+\.\d+\.\d+)|v8|
+JavaScriptCore[/ ](\d+\.\d+\.\d+)|webkit|
+SpiderMonkey[/ ](\d+\.\d+)|spidermonkey|
+
+# ─── SERIALIZATION / IPC ─────────────────────────────────────────────────────
+libprotobuf[/ ](\d+\.\d+\.\d+)|protobuf|
+google.protobuf[/ ](\d+\.\d+\.\d+)|protobuf|
+flatbuffers[/ ](\d+\.\d+\.\d+)|flatbuffers|
+Cap'n Proto[/ ](\d+\.\d+\.\d+)|capnproto|
+msgpack[/ ](\d+\.\d+\.\d+)|msgpack|
+thrift[/ ](\d+\.\d+\.\d+)|thrift|
+avro[/ ](\d+\.\d+\.\d+)|avro|
+ZMQ[/ ](\d+\.\d+\.\d+)|zeromq|
+libzmq version (\d+\.\d+\.\d+)|zeromq|
+nanomsg[/ ](\d+\.\d+\.\d+)|nanomsg|
+
+# ─── TEXT / UNICODE / FONTS ──────────────────────────────────────────────────
+FreeType (\d+\.\d+\.\d+)|freetype|
+FreeType2 (\d+\.\d+\.\d+)|freetype|
+HarfBuzz (\d+\.\d+\.\d+)|harfbuzz|
+ICU[/ ](\d+\.\d+\.\d+)|icu|
+ICU (\d+\.\d+\.\d+)|icu|
+Fontconfig version (\d+\.\d+\.\d+)|fontconfig|
+Pango[/ ](\d+\.\d+\.\d+)|pango|
+Cairo[/ ](\d+\.\d+\.\d+)|cairo|
+pixman[/ ](\d+\.\d+\.\d+)|pixman|
+
+# ─── GUI / WINDOWING ─────────────────────────────────────────────────────────
+SDL2? version (\d+\.\d+\.\d+)|sdl2|
+SDL[/ ](\d+\.\d+\.\d+)|sdl2|
+GLFW[/ ](\d+\.\d+\.\d+)|glfw|
+Dear ImGui[/ ]v?(\d+\.\d+\.\d+)|imgui|
+FLTK[/ ](\d+\.\d+\.\d+)|fltk|
+wxWidgets (\d+\.\d+\.\d+)|wxwidgets|
+Fox[/ ](\d+\.\d+\.\d+)|fox-toolkit|
+Iup[/ ](\d+\.\d+\.\d+)|iup|
+
+# ─── GRAPHICS / GPU ──────────────────────────────────────────────────────────
+GLEW (\d+\.\d+\.\d+)|glew|
+GLEW[/ ](\d+\.\d+\.\d+)|glew|
+GLM (\d+\.\d+\.\d+)|glm|
+Assimp[/ ](\d+\.\d+\.\d+)|assimp|
+OpenCOLLADA[/ ](\d+\.\d+\.\d+)|opencollada|
+Vulkan SDK[/ ](\d+\.\d+\.\d+\.\d+)|vulkan-sdk|
+SPIRV-Tools[/ ]v?(\d+\.\d+\.\d+)|spirv-tools|
+glslang[/ ](\d+\.\d+\.\d+)|glslang|
+
+# ─── MATH / SCIENCE ──────────────────────────────────────────────────────────
+fftw[/ ](\d+\.\d+\.\d+)|fftw|
+FFTW (\d+\.\d+\.\d+)|fftw|
+OpenBLAS[/ ](\d+\.\d+\.\d+)|openblas|
+Eigen[/ ](\d+\.\d+\.\d+)|eigen|
+GSL[/ ](\d+\.\d+)|gsl|
+
+# ─── TESTING / MISC ──────────────────────────────────────────────────────────
+libevent[/ ](\d+\.\d+\.\d+)|libevent|
+libevent-(\d+\.\d+\.\d+)|libevent|
+Boost[. ]?(\d+\.\d+\.\d+)|boost|
+boost[/ ](\d+\.\d+\.\d+)|boost|
+GLib[/ ](\d+\.\d+\.\d+)|glib|
+libffi[/ ](\d+\.\d+\.\d+)|libffi|
+pcap[/ ](\d+\.\d+\.\d+)|libpcap|
+npcap[/ ](\d+\.\d+\.\d+)|npcap|
+openldap[/ ](\d+\.\d+\.\d+)|openldap|
+Kerberos[/ ](\d+\.\d+)|krb5|
+libgcrypt[/ ](\d+\.\d+\.\d+)|libgcrypt|
+gpgme[/ ](\d+\.\d+\.\d+)|gpgme|
+libassuan[/ ](\d+\.\d+\.\d+)|libassuan|
+dbus[/ ](\d+\.\d+\.\d+)|dbus|
+json-c[/ ](\d+\.\d+\.\d+)|json-c|
+cURL[/ ](\d+\.\d+\.\d+)|curl|
+Ragel[/ ](\d+\.\d+\.\d+)|ragel|
+tre[/ ](\d+\.\d+\.\d+)|tre|
+Argon2[/ ](\d+\.\d+\.\d+)|argon2|
+libzip[/ ](\d+\.\d+\.\d+)|libzip|
+libarchive[/ ](\d+\.\d+\.\d+)|libarchive|
+libgit2 v?(\d+\.\d+\.\d+)|libgit2|
