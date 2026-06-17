@@ -35,8 +35,8 @@ async fn main() {
 
         println!();
 
-        if extraction_result.file_type == FileType::ELF {
-            if args.api && commands::request_cli::has_internet().await {
+        if args.api && commands::request_cli::has_internet().await {
+            if extraction_result.file_type == FileType::ELF {
                 pb.set_message(format!("{}", "Fetching matching CVEs from API...".bold()));
 
                 let response = commands::request_cli::make(&args.ecosystem, analyzer_result).await;
@@ -69,11 +69,11 @@ async fn main() {
                     println!("details : {:?}", det);
                     println!("severity : {:?}", sev);
                 }
+            } else {
+                println!("{}", "Cannot use API for PE files".red().bold());
+                print!("-> ");
+                println!("{}", "This will be implemented in futur versions".bold())
             }
-        } else {
-            println!("{}", "Cannot use API for PE files".red().bold());
-            print!("-> ");
-            println!("{}", "This will be implemented in futur versions".bold())
         }
         pb.finish_and_clear();
         println!();
