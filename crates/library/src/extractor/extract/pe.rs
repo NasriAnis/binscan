@@ -32,10 +32,10 @@ fn extract_pe_imports(buffer: &[u8]) -> Result<Vec<String>, pelite::Error> {
             for import in desc.int()? {
                 match import? {
                     Import64::ByName { name, .. } => {
-                        result.push(format!("{}|{}", name, dll));
+                        result.push(format!("{} {}", name, dll));
                     }
                     Import64::ByOrdinal { ord } => {
-                        result.push(format!("{}|{}", ord, dll));
+                        result.push(format!("{} {}", ord, dll));
                     }
                 }
             }
@@ -46,10 +46,10 @@ fn extract_pe_imports(buffer: &[u8]) -> Result<Vec<String>, pelite::Error> {
             for import in desc.int()? {
                 match import? {
                     Import32::ByName { name, .. } => {
-                        result.push(format!("{}|{}", name, dll));
+                        result.push(format!("{} {}", name, dll));
                     }
                     Import32::ByOrdinal { ord } => {
-                        result.push(format!("{}|{}", ord, dll));
+                        result.push(format!("{} {}", ord, dll));
                     }
                 }
             }

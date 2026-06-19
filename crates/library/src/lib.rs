@@ -1,6 +1,8 @@
 pub mod analyzer;
-pub mod db;
+pub mod services;
 pub mod extractor;
+
+use crate::analyzer::analyze::analyze_imports::Import;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum FileType {
@@ -28,7 +30,7 @@ pub struct BinaryData {
     pub format: FileType,
     pub compiler: String,
     pub libs: Vec<String>,
-    pub imports: Vec<String>,
+    pub imports: Vec<Import>,
     pub security: SecurityInfo,
     // future add ons
     // pub binary: String,

@@ -1,6 +1,7 @@
 use crate::{BinaryData, ExtractedModules, analyzer::fingerprints::fingerprinting};
 mod analyze_strings;
 mod detect_compiler;
+pub mod analyze_imports;
 
 // struct VersionMatch {
 //     package: String,
@@ -8,19 +9,22 @@ mod detect_compiler;
 //     ecosystem: String,
 // }
 
-pub fn run(data: &ExtractedModules) -> BinaryData {
-    let fing = fingerprinting::run(data.file_type);
-    let _libs = analyze_strings::run(data, &fing);
-    let _compiler = detect_compiler::run(data);
+pub fn run(extracted_modules: &ExtractedModules) -> BinaryData {
+    let libs = analyze_strings::run(&extracted_modules.strings, extracted_modules.file_type);
+    let compiler = detect_compiler::run(&extracted_modules.strings);
+    let imports = match analyze_imports::run(&extracted_modules.imports, extracted_modules.file_type){
+        Ok(t) => t,
+        Err(_) => panic!(),
+        };
 
     // println!("STrings : {:?}", data.strings);
     // println!("Result : {:?}", _libs);
 
     BinaryData {
-        format: data.file_type,
-        compiler: _compiler.unwrap_or("Unkown".to_string()),
-        libs: _libs,
-        imports: data.imports.clone(),
-        security: data.security,
+        format: extracted_modules.file_type,
+        compiler: compiler.unwrap_or("Unkown".to_string()),
+        libs: libs,
+        imports: imports,
+        security: extracted_modules.security,
     }
 }
