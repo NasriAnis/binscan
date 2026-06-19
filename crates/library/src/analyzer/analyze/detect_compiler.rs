@@ -1,4 +1,3 @@
-use crate::ExtractedModules;
 use regex::Regex;
 
 struct CompilerPattern {
@@ -37,16 +36,16 @@ static COMPILER_PATTERNS: &[CompilerPattern] = &[
     },
 ];
 
-pub fn run(data: &ExtractedModules) -> Option<String> {
+pub fn run(strings: &Vec<String>) -> Option<String> {
     // compile all patterns once
     let compiled: Vec<(&str, Regex)> = COMPILER_PATTERNS
         .iter()
         .map(|p| (p.name, Regex::new(p.regex).unwrap()))
         .collect();
 
-    for s in &data.strings {
+    for s in strings {
         for (name, re) in &compiled {
-            if let Some(caps) = re.captures(s) {
+            if let Some(caps) = re.captures(&s) {
                 let version = &caps["version"];
                 return Some(format!("{} {}", name, version));
             }
