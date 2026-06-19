@@ -38,7 +38,6 @@ fn extract_elf_symbols(buffer: &[u8]) -> Vec<String> {
         // println!("[{kind}] {name}");
         result.push(kind.to_string() + name);
     }
-
     result
 }
 
@@ -53,15 +52,6 @@ fn extract_elf_imports(buffer: &[u8]) -> Vec<String> {
         result.push(lib.to_string());
     }
     result
-
-    // let imports = elf
-    //     .dynsyms
-    //     .iter()
-    //     .filter(|sym| sym.st_shndx == goblin::elf::section_header::SHN_UNDEF as usize)
-    //     .filter_map(|sym| elf.dynstrtab.get_at(sym.st_name))
-    //     .filter(|name| !name.is_empty())
-    //     .map(String::from)
-    //     .collect();
 }
 
 // detect PIE, NX, RELRO, stack canary, FORTIFY
