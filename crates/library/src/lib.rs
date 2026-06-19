@@ -1,6 +1,6 @@
 pub mod analyzer;
-pub mod services;
 pub mod extractor;
+pub mod services;
 
 use crate::analyzer::analyze::analyze_imports::Import;
 

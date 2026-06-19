@@ -45,7 +45,7 @@ pub fn run(strings: &Vec<String>) -> Option<String> {
 
     for s in strings {
         for (name, re) in &compiled {
-            if let Some(caps) = re.captures(&s) {
+            if let Some(caps) = re.captures(s) {
                 let version = &caps["version"];
                 return Some(format!("{} {}", name, version));
             }

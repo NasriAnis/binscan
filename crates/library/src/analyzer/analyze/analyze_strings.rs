@@ -1,6 +1,4 @@
-use crate::{
-    FileType,
-};
+use crate::FileType;
 
 use regex::Regex;
 use std::collections::hash_set::HashSet;
