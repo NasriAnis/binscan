@@ -2,8 +2,11 @@ use library::FileType;
 use owo_colors::OwoColorize;
 use std::path::Path;
 mod commands;
+mod user_interface;
 use indicatif::{ProgressBar, ProgressStyle};
 use std::time::Duration;
+
+use crate::user_interface::to_table;
 
 #[tokio::main]
 async fn main() {
@@ -26,12 +29,7 @@ async fn main() {
 
         println!();
 
-        println!("Data from binary:");
-        println!("Compiler: {}", analyzer_result.compiler);
-        println!("Format: {:?}", analyzer_result.format);
-        println!("Imports: {:?}", analyzer_result.imports);
-        println!("Libs: {:?}", analyzer_result.libs);
-        println!("Security info: {:?}", analyzer_result.security);
+        to_table::draw_bindata(&analyzer_result);
 
         println!();
 
