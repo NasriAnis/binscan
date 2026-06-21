@@ -3,12 +3,6 @@ pub mod analyze_imports;
 mod analyze_strings;
 mod detect_compiler;
 
-// struct VersionMatch {
-//     package: String,
-//     version: String,
-//     ecosystem: String,
-// }
-
 pub fn run(extracted_modules: &ExtractedModules) -> BinaryData {
     let libs = analyze_strings::run(&extracted_modules.strings, extracted_modules.file_type);
     let compiler = detect_compiler::run(&extracted_modules.strings);
@@ -17,10 +11,6 @@ pub fn run(extracted_modules: &ExtractedModules) -> BinaryData {
             Ok(t) => t,
             Err(_) => panic!(),
         };
-
-    // println!("STrings : {:?}", data.strings);
-    // println!("Result : {:?}", _libs);
-
     BinaryData {
         format: extracted_modules.file_type,
         compiler: compiler.unwrap_or("Unkown".to_string()),
