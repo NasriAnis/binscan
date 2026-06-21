@@ -1,4 +1,4 @@
-use regex::Regex;
+use regex::{Regex, RegexBuilder};
 use std::fs;
 
 use crate::FileType;
@@ -32,8 +32,12 @@ fn read(path: &str) -> Vec<FingerprintPattern> {
             if parts.len() < 2 {
                 return None;
             }
+            let regex = RegexBuilder::new(parts[0])
+                .case_insensitive(true)
+                .build()
+                .ok()?;
             Some(FingerprintPattern {
-                regex: Regex::new(parts[0]).ok()?,
+                regex,
                 package: parts[1].to_string(),
                 ecosystem: parts.get(2).unwrap_or(&"").to_string(),
             })
