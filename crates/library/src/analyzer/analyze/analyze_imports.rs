@@ -1,91 +1,41 @@
 use crate::FileType;
 use std::collections::HashSet;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Import {
     pub libraries: String,
     pub functions: Vec<String>,
 }
 
 pub fn run(imports: &Vec<String>, file_type: FileType) -> Result<Vec<Import>, std::io::Error> {
-    let mut results: Vec<Import> = Vec::new();
-
     if file_type == FileType::PE {
-        let mut vec_func: Vec<String> = Vec::new();
-        let mut seen_lib: HashSet<String> = HashSet::new();
-        let mut seen_func: HashSet<String> = HashSet::new();
-        let mut import: Import;
-        let mut prev_lib: &str = "";
-        let mut first_entry = true;
-
-        for i in imports {
-            if let Some((func, lib)) = i.trim().split_once(' ') {
-                if seen_lib.contains(lib) {
-                    if !seen_func.contains(func) {
-                        seen_func.insert(func.to_string());
-                        vec_func.push(func.to_string());
-                        prev_lib = lib;
-                    } else {
-                        prev_lib = lib;
-                        continue;
-                    }
-                } else {
-                    seen_lib.clear();
-                    seen_func.clear();
-                    seen_lib.insert(lib.to_string());
-
-                    if first_entry {
-                        seen_lib.insert(lib.to_string());
-                        first_entry = false;
-                    } else {
-                        import = Import {
-                            libraries: prev_lib.to_string(),
-                            functions: vec_func.clone(),
-                        };
-                        results.push(import);
-                        vec_func.clear();
-                    }
-                }
-            }
-        }
+        Ok(parse(imports, &" ".to_string()))
     } else if file_type == FileType::ELF {
-        let mut vec_func: Vec<String> = Vec::new();
-        let mut seen_lib: HashSet<String> = HashSet::new();
-        let mut seen_func: HashSet<String> = HashSet::new();
-        let mut import: Import;
-        let mut prev_lib: &str = "";
-        let mut first_entry = true;
+        Ok(parse(imports, &"@@".to_string()))
+    } else {
+        panic!()
+    }
+}
 
-        for i in imports {
-            if let Some((func, lib)) = i.trim().split_once("@@") {
-                if seen_lib.contains(lib) {
-                    if !seen_func.contains(func) {
-                        seen_func.insert(func.to_string());
-                        vec_func.push(func.to_string());
-                        prev_lib = lib;
-                    } else {
-                        prev_lib = lib;
-                        continue;
-                    }
-                } else {
-                    seen_lib.clear();
-                    seen_func.clear();
-                    seen_lib.insert(lib.to_string());
+fn parse(imports: &Vec<String>, split: &String) -> Vec<Import> {
+    let mut results: Vec<Import> = Vec::new();
+    let mut seen_lib: HashSet<String> = HashSet::new();
 
-                    if first_entry {
-                        seen_lib.insert(lib.to_string());
-                        first_entry = false;
-                    } else {
-                        import = Import {
-                            libraries: prev_lib.to_string(),
-                            functions: vec_func.clone(),
-                        };
-                        results.push(import);
-                        vec_func.clear();
-                    }
-                }
+    for i in imports {
+        if let Some((func, lib)) = i.trim().split_once(split) {
+            if !seen_lib.contains(lib) {
+                seen_lib.insert(lib.to_string());
+                results.push(Import {
+                    libraries: lib.to_string(),
+                    functions: vec![func.to_string()],
+                });
+            } else if seen_lib.contains(lib)
+                && let Some(r) = results.iter_mut().find(|r| r.libraries == lib)
+                && !r.functions.contains(&func.to_string())
+            {
+                r.functions.push(func.to_string());
             }
         }
     }
-    Ok(results)
+    results
 }
