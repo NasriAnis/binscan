@@ -1,6 +1,6 @@
 use library::FileType;
 use owo_colors::OwoColorize;
-use std::path::Path;
+use std::{path::Path, time::Instant};
 mod commands;
 mod user_interface;
 use indicatif::{ProgressBar, ProgressStyle};
@@ -24,14 +24,24 @@ async fn main() {
 
         pb.set_message(format!("{}", "Extracting and analyzing binary...".bold()));
 
+        let now = Instant::now();
+
         let extraction_result = commands::extractor_cli::run(args.source.clone());
         let analyzer_result = commands::analyzer_cli::run(&extraction_result);
+
+        let elapsed_time = now.elapsed();
 
         println!();
 
         to_table::draw_bindata(&analyzer_result);
 
         println!();
+        println!(
+            "{}{}{}",
+            "Analyzer time: ".bold(),
+            elapsed_time.as_secs().bold(),
+            "s".bold()
+        );
 
         if args.api && commands::request_cli::has_internet().await {
             if extraction_result.file_type == FileType::ELF {
