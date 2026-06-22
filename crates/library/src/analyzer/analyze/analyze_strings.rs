@@ -24,13 +24,13 @@ pub fn run(strings: &Vec<String>, file_type: FileType) -> Vec<String> {
                 fetched_libs.push(caps["lib"].to_string());
             }
             for m in re_glibc_ver.find_iter(s) {
-                fetched_libs.push(format!("{} {}", m.as_str().to_string(), "*"));
+                fetched_libs.push(format!("{} {}", m.as_str(), "*"));
             }
             for m in re_soname.find_iter(s) {
-                fetched_libs.push(format!("{} {}", m.as_str().to_string(), "*"));
+                fetched_libs.push(format!("{} {}", m.as_str(), "*"));
             }
             for m in re_ldlinux.find_iter(s) {
-                fetched_libs.push(format!("{} {}", m.as_str().to_string(), "*"));
+                fetched_libs.push(format!("{} {}", m.as_str(), "*"));
             }
         }
     } else if file_type == FileType::PE {
