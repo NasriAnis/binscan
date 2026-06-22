@@ -1,7 +1,7 @@
 use crate::FileType;
 
 use regex::Regex;
-use std::collections::hash_set::HashSet;
+use std::collections::{HashMap, hash_set::HashSet};
 
 pub fn run(strings: &Vec<String>, file_type: FileType) -> Vec<String> {
     let mut fetched_libs: Vec<String> = Vec::new();
@@ -57,16 +57,35 @@ fn patern_find_in(
     mut fetched_libs: Vec<String>,
 ) -> Vec<String> {
     let patterns = super::fingerprinting::run(file_type);
-    let mut seen = HashSet::new();
+    let mut seen = HashMap::new();
 
     for s in string {
         for p in &patterns {
             if let Some(caps) = p.regex.captures(s) {
                 let version = caps.get(1).map(|m| m.as_str()).unwrap_or("unknown");
-                let key = format!("{}@{}", p.package, version);
-                if seen.insert(key) {
-                    let combined_string = format!("{} {} {}", p.package, version, p.ecosystem);
-                    fetched_libs.push(combined_string);
+
+                match seen.get(&p.package) {
+                    // Scenario 1: Brand new package discovery
+                    None => {
+                        seen.insert(p.package.clone(), version.to_string());
+                        let combined_string = format!("{} {} {}", p.package, version, p.ecosystem);
+                        fetched_libs.push(combined_string);
+                    }
+                    // Scenario 2: Package exists, but old version was "unknown" and new one is a real version
+                    Some(old_version) if old_version == "unknown" && version != "unknown" => {
+                        // Update the tracked version
+                        seen.insert(p.package.clone(), version.to_string());
+
+                        // Replace the old "unknown" string with the versioned string in your results list
+                        let target_to_remove = format!("{} unknown {}", p.package, p.ecosystem);
+                        if let Some(pos) = fetched_libs.iter().position(|x| x == &target_to_remove)
+                        {
+                            fetched_libs[pos] =
+                                format!("{} {} {}", p.package, version, p.ecosystem);
+                        }
+                    }
+                    // Scenario 3: Already have a version, or new match is also "unknown" -> ignore it
+                    _ => {}
                 }
             }
         }

@@ -1,104 +1,96 @@
-# ELF Binary Library Fingerprint Patterns
-# Format: regex_pattern|package_name|osv_ecosystem
-# - Regex capture group 1 = version string (optional on some entries)
-# - ecosystem: leave empty to query OSV across all ecosystems
-# - Lines starting with # are comments
-
 # ─── TLS / CRYPTO ────────────────────────────────────────────────────────────
-OpenSSL.*(\d+\.\d+.*.?)|openssl|
-LibreSSL.*(\d+\.\d+\.\d+)|libressl|
-mbedTLS.*(\d+\.\d+\.\d+)|mbedtls|
-wolfSSL.*(\d+\.\d+\.\d+)|wolfssl|
-GnuTLS.*(\d+\.\d+\.\d+)|gnutls|
-crypto\+\+.*(\d+\.\d+\.\d+)|libcrypto++|
-libsodium.*(\d+\.\d+\.\d+)|libsodium|
-Nettle.*(\d+\.\d+)|nettle|
-NSS.*(\d+\.\d+\.\d+)|nss|
+(?i)OpenSSL(?:.*??(\d+\.\d+\S*))?|openssl|
+(?i)LibreSSL(?:.*??(\d+\.\d+\.\d+\S*))?|libressl|
+(?i)mbedTLS(?:.*??(\d+\.\d+\.\d+\S*))?|mbedtls|
+(?i)wolfSSL(?:.*??(\d+\.\d+\.\d+\S*))?|wolfssl|
+(?i)GnuTLS(?:.*??(\d+\.\d+\.\d+\S*))?|gnutls|
+(?i)crypto\+\+(?:.*??(\d+\.\d+\.\d+\S*))?|libcrypto++|
+(?i)libsodium(?:.*??(\d+\.\d+\.\d+\S*))?|libsodium|
+(?i)Nettle(?:.*??(\d+\.\d+\S*))?|nettle|
+(?i)NSS(?:.*??(\d+\.\d+\.\d+\S*))?|nss|
 
 # ─── HTTP / NETWORK ──────────────────────────────────────────────────────────
-libcurl.*(\d+\.\d+\.\d+)|curl|
-nghttp2.*(\d+\.\d+\.\d+)|nghttp2|
-nghttp3.*(\d+\.\d+\.\d+)|nghttp3|
-ngtcp2.*(\d+\.\d+\.\d+)|ngtcp2|
-c-ares.*(\d+\.\d+\.\d+)|c-ares|
-libidn2.*(\d+\.\d+\.\d+)|libidn2|
-libidn.*(\d+\.\d+\.\d+)|libidn|
-libpsl.*(\d+\.\d+\.\d+)|libpsl|
-libssh2.*(\d+\.\d+\.\d+)|libssh2|
-libssh.*(\d+\.\d+\.\d+)|libssh|
-libuv.*v?(\d+\.\d+\.\d+)|libuv1|
-libwebsockets.*(\d+\.\d+\.\d+)|libwebsockets|
-microhttpd.*(\d+\.\d+\.\d+)|libmicrohttpd|
+(?i)libcurl(?:.*??(\d+\.\d+\.\d+\S*))?|curl|
+(?i)nghttp2(?:.*??(\d+\.\d+\.\d+\S*))?|nghttp2|
+(?i)nghttp3(?:.*??(\d+\.\d+\.\d+\S*))?|nghttp3|
+(?i)ngtcp2(?:.*??(\d+\.\d+\.\d+\S*))?|ngtcp2|
+(?i)c-ares(?:.*??(\d+\.\d+\.\d+\S*))?|c-ares|
+(?i)libidn2(?:.*??(\d+\.\d+\.\d+\S*))?|libidn2|
+(?i)libidn(?:.*??(\d+\.\d+\.\d+\S*))?|libidn|
+(?i)libpsl(?:.*??(\d+\.\d+\.\d+\S*))?|libpsl|
+(?i)libssh2(?:.*??(\d+\.\d+\.\d+\S*))?|libssh2|
+(?i)libssh(?:.*??(\d+\.\d+\.\d+\S*))?|libssh|
+(?i)libuv(?:.*??v?(\d+\.\d+\.\d+\S*))?|libuv1|
+(?i)libwebsockets(?:.*??(\d+\.\d+\.\d+\S*))?|libwebsockets|
+(?i)microhttpd(?:.*??(\d+\.\d+\.\d+\S*))?|libmicrohttpd|
 
 # ─── COMPRESSION ─────────────────────────────────────────────────────────────
-zlib.*(\d+\.\d+\.\d+)|zlib|
-zlib-ng.*(\d+\.\d+\.\d+)|zlib-ng|
-brotli.*(\d+\.\d+\.\d+)|brotli|
-\bLZ4.*(\d+\.\d+\.\d+)|liblz4|
-\blz4.*(\d+\.\d+\.\d+)|liblz4|
-\bZSTD.*v?(\d+\.\d+\.\d+)|libzstd|
-zstd.*v?(\d+\.\d+\.\d+)|libzstd|
-bzip2.*(\d+\.\d+\.\d+)|bzip2|
-liblzma.*(\d+\.\d+\.\d+)|xz-utils|
-xz.*(\d+\.\d+\.\d+)|xz-utils|
-snappy.*(\d+\.\d+\.\d+)|libsnappy|
+(?i)zlib(?:.*??(\d+\.\d+\.\d+\S*))?|zlib|
+(?i)zlib-ng(?:.*??(\d+\.\d+\.\d+\S*))?|zlib-ng|
+(?i)brotli(?:.*??(\d+\.\d+\.\d+\S*))?|brotli|
+(?i)\blz4(?:.*??(\d+\.\d+\.\d+\S*))?|liblz4|
+(?i)\bzstd(?:.*??v?(\d+\.\d+\.\d+\S*))?|libzstd|
+(?i)bzip2(?:.*??(\d+\.\d+\.\d+\S*))?|bzip2|
+(?i)liblzma(?:.*??(\d+\.\d+\.\d+\S*))?|xz-utils|
+(?i)\bxz(?:.*??(\d+\.\d+\.\d+\S*))?|xz-utils|
+(?i)snappy(?:.*??(\d+\.\d+\.\d+\S*))?|libsnappy|
 
 # ─── XML / PARSING ───────────────────────────────────────────────────────────
-libxml2.*(\d+\.\d+\.\d+)|libxml2|
-expat.*(\d+\.\d+\.\d+)|expat|
-pugixml.*(\d+\.\d+\.\d+)|pugixml|
-tinyxml2.*(\d+\.\d+\.\d+)|tinyxml2|
-rapidjson.*(\d+\.\d+\.\d+)|rapidjson|
-cJSON.*(\d+\.\d+\.\d+)|cjson|
-jansson.*(\d+\.\d+\.\d+)|jansson|
-yaml-cpp.*(\d+\.\d+\.\d+)|yaml-cpp|
-libyaml.*(\d+\.\d+\.\d+)|libyaml|
+(?i)libxml2(?:.*??(\d+\.\d+\.\d+\S*))?|libxml2|
+(?i)expat(?:.*??(\d+\.\d+\.\d+\S*))?|expat|
+(?i)pugixml(?:.*??(\d+\.\d+\.\d+\S*))?|pugixml|
+(?i)tinyxml2(?:.*??(\d+\.\d+\.\d+\S*))?|tinyxml2|
+(?i)rapidjson(?:.*??(\d+\.\d+\.\d+\S*))?|rapidjson|
+(?i)cjson(?:.*??(\d+\.\d+\.\d+\S*))?|cjson|
+(?i)jansson(?:.*??(\d+\.\d+\.\d+\S*))?|jansson|
+(?i)yaml-cpp(?:.*??(\d+\.\d+\.\d+\S*))?|yaml-cpp|
+(?i)libyaml(?:.*??(\d+\.\d+\.\d+\S*))?|libyaml|
 
 # ─── IMAGE / MEDIA CODECS ────────────────────────────────────────────────────
-libpng.*(\d+\.\d+\.\d+)|libpng16|
-libjpeg-turbo.*(\d+\.\d+\.\d+)|libjpeg-turbo|
-libjpeg.*(\d+.?)|libjpeg|
-libwebp.*(\d+\.\d+\.\d+)|libwebp|
-libtiff.*(\d+\.\d+\.\d+)|libtiff|
-GIFLIB.*(\d+\.\d+\.\d+)|giflib|
-OpenJPEG.*(\d+\.\d+\.\d+)|openjpeg2|
-libjxl.*(\d+\.\d+\.\d+)|libjxl|
+(?i)libpng(?:.*??(\d+\.\d+\.\d+\S*))?|libpng16|
+(?i)libjpeg-turbo(?:.*??(\d+\.\d+\.\d+\S*))?|libjpeg-turbo|
+(?i)libjpeg(?:.*??(\d+\S*))?|libjpeg|
+(?i)libwebp(?:.*??(\d+\.\d+\.\d+\S*))?|libwebp|
+(?i)libtiff(?:.*??(\d+\.\d+\.\d+\S*))?|libtiff|
+(?i)giflib(?:.*??(\d+\.\d+\.\d+\S*))?|giflib|
+(?i)openjpeg(?:.*??(\d+\.\d+\.\d+\S*))?|openjpeg2|
+(?i)libjxl(?:.*??(\d+\.\d+\.\d+\S*))?|libjxl|
 
 # ─── MULTIMEDIA ──────────────────────────────────────────────────────────────
-libavcodec.*(\d+\.\d+\.\d+)|ffmpeg|
-libavformat.*(\d+\.\d+\.\d+)|ffmpeg|
-libavutil.*(\d+\.\d+\.\d+)|ffmpeg|
-x264.*(\d+)|x264|
-x265.*(\d+\.\d+)|x265|
-libvpx.*v?(\d+\.\d+\.\d+)|libvpx|
-libopus.*(\d+\.\d+\.\d+)|opus|
-libFLAC.*(\d+\.\d+\.\d+)|flac|
-Vorbis.*(\d+\.\d+\.\d+)|libvorbis|
+(?i)libavcodec(?:.*??(\d+\.\d+\.\d+\S*))?|ffmpeg|
+(?i)libavformat(?:.*??(\d+\.\d+\.\d+\S*))?|ffmpeg|
+(?i)libavutil(?:.*??(\d+\.\d+\.\d+\S*))?|ffmpeg|
+(?i)x264(?:.*??(\d+\S*))?|x264|
+(?i)x265(?:.*??(\d+\.\d+\S*))?|x265|
+(?i)libvpx(?:.*??v?(\d+\.\d+\.\d+\S*))?|libvpx|
+(?i)libopus(?:.*??(\d+\.\d+\.\d+\S*))?|opus|
+(?i)libflac(?:.*??(\d+\.\d+\.\d+\S*))?|flac|
+(?i)vorbis(?:.*??(\d+\.\d+\.\d+\S*))?|libvorbis|
 
 # ─── DATABASE ────────────────────────────────────────────────────────────────
-SQLite.*(\d+\.\d+\.\d+)|sqlite3|
-PostgreSQL.*(\d+\.\d+\.\d+)|postgresql|
-libpq.*(\d+\.\d+\.\d+)|libpq|
-mariadb-connector-c.*(\d+\.\d+\.\d+)|mariadb-connector-c|
-leveldb.*(\d+\.\d+)|leveldb|
-rocksdb.*(\d+\.\d+\.\d+)|rocksdb|
+(?i)sqlite(?:.*??(\d+\.\d+\.\d+\S*))?|sqlite3|
+(?i)postgresql(?:.*??(\d+\.\d+\.\d+\S*))?|postgresql|
+(?i)libpq(?:.*??(\d+\.\d+\.\d+\S*))?|libpq|
+(?i)mariadb-connector-c(?:.*??(\d+\.\d+\.\d+\S*))?|mariadb-connector-c|
+(?i)leveldb(?:.*??(\d+\.\d+\S*))?|leveldb|
+(?i)rocksdb(?:.*??(\d+\.\d+\.\d+\S*))?|rocksdb|
 
 # ─── Runtimes / Engines ──────────────────────────────────────────────────────
-Python.*(\d+\.\d+\.\d+)|python3|
-Lua.*(\d+\.\d+\.\d+)|lua5.4|
-PCRE2.*(\d+\.\d+)|pcre2|
-PCRE.*(\d+\.\d+)|pcre3|
+(?i)python(?:.*??(\d+\.\d+\.\d+\S*))?|python3|
+(?i)lua(?:.*??(\d+\.\d+\.\d+\S*))?|lua5.4|
+(?i)pcre2(?:.*??(\d+\.\d+\S*))?|pcre2|
+(?i)pcre(?:.*??(\d+\.\d+\S*))?|pcre3|
 
 # ─── SYSTEM / MISC ───────────────────────────────────────────────────────────
-libevent.*(\d+\.\d+\.\d+)|libevent|
-boost.*(\d+\.\d+\.\d+)|boost|
-GLib.*(\d+\.\d+\.\d+)|glib2.0|
-libffi.*(\d+\.\d+\.\d+)|libffi|
-pcap.*(\d+\.\d+\.\d+)|libpcap|
-openldap.*(\d+\.\d+\.\d+)|openldap|
-Kerberos.*(\d+\.\d+)|krb5|
-libgcrypt.*(\d+\.\d+\.\d+)|libgcrypt20|
-dbus.*(\d+\.\d+\.\d+)|dbus|
-libzip.*(\d+\.\d+\.\d+)|libzip|
-libarchive.*(\d+\.\d+\.\d+)|libarchive|
-libgit2.*v?(\d+\.\d+\.\d+)|libgit2|
+(?i)libevent(?:.*??(\d+\.\d+\.\d+\S*))?|libevent|
+(?i)boost(?:.*??(\d+\.\d+\.\d+\S*))?|boost|
+(?i)glib(?:.*??(\d+\.\d+\.\d+\S*))?|glib2.0|
+(?i)libffi(?:.*??(\d+\.\d+\.\d+\S*))?|libffi|
+(?i)pcap(?:.*??(\d+\.\d+\.\d+\S*))?|libpcap|
+(?i)openldap(?:.*??(\d+\.\d+\.\d+\S*))?|openldap|
+(?i)kerberos(?:.*??(\d+\.\d+\S*))?|krb5|
+(?i)libgcrypt(?:.*??(\d+\.\d+\.\d+\S*))?|libgcrypt20|
+(?i)dbus(?:.*??(\d+\.\d+\.\d+\S*))?|dbus|
+(?i)libzip(?:.*??(\d+\.\d+\.\d+\S*))?|libzip|
+(?i)libarchive(?:.*??(\d+\.\d+\.\d+\S*))?|libarchive|
+(?i)libgit2(?:.*??v?(\d+\.\d+\.\d+\S*))?|libgit2|

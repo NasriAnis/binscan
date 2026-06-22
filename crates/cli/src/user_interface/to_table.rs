@@ -18,11 +18,12 @@ pub fn draw_bindata(data: &BinaryData) {
     // for libs
     let mut lib_table = Table::new();
     lib_table
-        .set_header(vec!["Libraries"])
+        .set_header(vec!["Libraries", "Version"])
         .set_content_arrangement(comfy_table::ContentArrangement::DynamicFullWidth);
 
     for s in &data.libs {
-        lib_table.add_row(vec![&s]);
+        let splited: Vec<&str> = s.split_whitespace().collect();
+        lib_table.add_row(vec![splited[0], splited[1]]);
     }
 
     // for imports
