@@ -12,14 +12,14 @@ pub fn draw_bindata(data: &BinaryData) {
     let mut cmp_format_table = Table::new();
     cmp_format_table
         .set_header(vec!["Compiler", "Format"])
-        .set_content_arrangement(comfy_table::ContentArrangement::DynamicFullWidth)
+        .set_content_arrangement(comfy_table::ContentArrangement::Dynamic)
         .add_row(vec![&data.compiler, format]);
 
     // for libs
     let mut lib_table = Table::new();
     lib_table
         .set_header(vec!["Libraries", "Version"])
-        .set_content_arrangement(comfy_table::ContentArrangement::DynamicFullWidth);
+        .set_content_arrangement(comfy_table::ContentArrangement::Dynamic);
 
     for s in &data.libs {
         let splited: Vec<&str> = s.split_whitespace().collect();
@@ -30,7 +30,7 @@ pub fn draw_bindata(data: &BinaryData) {
     let mut import_table = Table::new();
     import_table
         .set_header(vec!["Import", "functions"])
-        .set_content_arrangement(comfy_table::ContentArrangement::DynamicFullWidth);
+        .set_content_arrangement(comfy_table::ContentArrangement::Dynamic);
 
     for s in &data.imports {
         // if s.functions.is_empty() {
@@ -43,7 +43,7 @@ pub fn draw_bindata(data: &BinaryData) {
     let mut sec_table = Table::new();
     sec_table
         .set_header(vec!["Security Feature", "Availability"])
-        .set_content_arrangement(comfy_table::ContentArrangement::DynamicFullWidth);
+        .set_content_arrangement(comfy_table::ContentArrangement::Dynamic);
 
     match &data.security {
         SecurityInfo::Pe(pe) => {
