@@ -1,34 +1,44 @@
 use comfy_table::Table;
+use comfy_table::modifiers::UTF8_ROUND_CORNERS;
+use comfy_table::presets::UTF8_FULL;
 use library::{BinaryData, FileType, SecurityInfo};
 
 pub fn draw_bindata(data: &BinaryData) {
-    // for compiler and format
+    // for compiler and format -------------------------------------
     let format = match data.format {
         FileType::PE => "PE",
         FileType::ELF => "ELF",
         _ => "Unkhown",
     };
 
-    let mut cmp_format_table = Table::new();
-    cmp_format_table
+    let mut table = Table::new();
+    table
+        .load_preset(UTF8_FULL)
+        .apply_modifier(UTF8_ROUND_CORNERS)
         .set_header(vec!["Compiler", "Format"])
         .set_content_arrangement(comfy_table::ContentArrangement::Dynamic)
         .add_row(vec![&data.compiler, format]);
+    println!("{table}");
 
-    // for libs
-    let mut lib_table = Table::new();
-    lib_table
+    // for libs -------------------------------------
+    table = Table::new();
+    table
+        .load_preset(UTF8_FULL)
+        .apply_modifier(UTF8_ROUND_CORNERS)
         .set_header(vec!["Libraries", "Version"])
         .set_content_arrangement(comfy_table::ContentArrangement::Dynamic);
 
     for s in &data.libs {
         let splited: Vec<&str> = s.split_whitespace().collect();
-        lib_table.add_row(vec![splited[0], splited[1]]);
+        table.add_row(vec![splited[0], splited[1]]);
     }
+    println!("{table}");
 
-    // for imports
-    let mut import_table = Table::new();
-    import_table
+    // for imports -------------------------------------
+    table = Table::new();
+    table
+        .load_preset(UTF8_FULL)
+        .apply_modifier(UTF8_ROUND_CORNERS)
         .set_header(vec!["Import", "functions"])
         .set_content_arrangement(comfy_table::ContentArrangement::Dynamic);
 
@@ -36,18 +46,21 @@ pub fn draw_bindata(data: &BinaryData) {
         // if s.functions.is_empty() {
         //     continue;
         // }
-        import_table.add_row(vec![&s.libraries, &s.functions.join(", ")]);
+        table.add_row(vec![&s.libraries, &s.functions.join(", ")]);
     }
+    println!("{table}");
 
-    // for security
-    let mut sec_table = Table::new();
-    sec_table
+    // for security -------------------------------------
+    table = Table::new();
+    table
+        .load_preset(UTF8_FULL)
+        .apply_modifier(UTF8_ROUND_CORNERS)
         .set_header(vec!["Security Feature", "Availability"])
         .set_content_arrangement(comfy_table::ContentArrangement::Dynamic);
 
     match &data.security {
         SecurityInfo::Pe(pe) => {
-            sec_table.add_row(vec![
+            table.add_row(vec![
                 "ASLR",
                 if pe.aslr {
                     "✓ Enabled"
@@ -55,7 +68,7 @@ pub fn draw_bindata(data: &BinaryData) {
                     "✗ Disabled"
                 },
             ]);
-            sec_table.add_row(vec![
+            table.add_row(vec![
                 "DEP",
                 if pe.dep {
                     "✓ Enabled"
@@ -63,7 +76,7 @@ pub fn draw_bindata(data: &BinaryData) {
                     "✗ Disabled"
                 },
             ]);
-            sec_table.add_row(vec![
+            table.add_row(vec![
                 "CFG",
                 if pe.cfg {
                     "✓ Enabled"
@@ -71,7 +84,7 @@ pub fn draw_bindata(data: &BinaryData) {
                     "✗ Disabled"
                 },
             ]);
-            sec_table.add_row(vec![
+            table.add_row(vec![
                 "No SEH",
                 if pe.no_seh {
                     "✓ Enabled"
@@ -79,7 +92,7 @@ pub fn draw_bindata(data: &BinaryData) {
                     "✗ Disabled"
                 },
             ]);
-            sec_table.add_row(vec![
+            table.add_row(vec![
                 "High Entropy ASLR",
                 if pe.hi_aslr {
                     "✓ Enabled"
@@ -89,7 +102,7 @@ pub fn draw_bindata(data: &BinaryData) {
             ]);
         }
         SecurityInfo::Elf(elf) => {
-            sec_table.add_row(vec![
+            table.add_row(vec![
                 "PIE",
                 if elf.pie {
                     "✓ Enabled"
@@ -97,7 +110,7 @@ pub fn draw_bindata(data: &BinaryData) {
                     "✗ Disabled"
                 },
             ]);
-            sec_table.add_row(vec![
+            table.add_row(vec![
                 "NX",
                 if elf.nx {
                     "✓ Enabled"
@@ -105,7 +118,7 @@ pub fn draw_bindata(data: &BinaryData) {
                     "✗ Disabled"
                 },
             ]);
-            sec_table.add_row(vec![
+            table.add_row(vec![
                 "RELRO",
                 if elf.relro {
                     "✓ Enabled"
@@ -113,7 +126,7 @@ pub fn draw_bindata(data: &BinaryData) {
                     "✗ Disabled"
                 },
             ]);
-            sec_table.add_row(vec![
+            table.add_row(vec![
                 "Stack Canary",
                 if elf.canary {
                     "✓ Enabled"
@@ -121,7 +134,7 @@ pub fn draw_bindata(data: &BinaryData) {
                     "✗ Disabled"
                 },
             ]);
-            sec_table.add_row(vec![
+            table.add_row(vec![
                 "FORTIFY",
                 if elf.fortify {
                     "✓ Enabled"
@@ -131,8 +144,5 @@ pub fn draw_bindata(data: &BinaryData) {
             ]);
         }
     }
-
-    println!("{cmp_format_table} {sec_table}");
-    println!("{import_table}");
-    println!("{lib_table}");
+    println!("{table}");
 }
