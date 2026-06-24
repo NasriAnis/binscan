@@ -17,7 +17,7 @@ pub fn draw_bindata(data: &BinaryData) {
         .apply_modifier(UTF8_ROUND_CORNERS)
         .set_header(vec!["Compiler", "Format"])
         .set_content_arrangement(comfy_table::ContentArrangement::Dynamic)
-        .add_row(vec![&data.compiler, format]);
+        .add_row(vec![&data.compiler, &format.to_string()]);
     println!("{table}");
 
     // for libs -------------------------------------
