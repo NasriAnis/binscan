@@ -18,7 +18,9 @@ pub fn draw_bindata(data: &BinaryData) {
         .set_header(vec!["Compiler", "Format"])
         .set_content_arrangement(comfy_table::ContentArrangement::Dynamic)
         .add_row(vec![&data.compiler, &format.to_string()]);
-    println!("{table}");
+    if !table.is_empty(){
+        println!("{table}");
+    }
 
     // for libs -------------------------------------
     table = Table::new();
@@ -32,7 +34,9 @@ pub fn draw_bindata(data: &BinaryData) {
         let splited: Vec<&str> = s.split_whitespace().collect();
         table.add_row(vec![splited[0], splited[1]]);
     }
-    println!("{table}");
+    if !table.is_empty(){
+        println!("{table}");
+    }
 
     // for imports -------------------------------------
     table = Table::new();
@@ -45,7 +49,9 @@ pub fn draw_bindata(data: &BinaryData) {
     for s in &data.imports {
         table.add_row(vec![&s.libraries, &s.functions.join(", ")]);
     }
-    println!("{table}");
+    if !table.is_empty(){
+        println!("{table}");
+    }
 
     // for security -------------------------------------
     table = Table::new();
@@ -141,5 +147,7 @@ pub fn draw_bindata(data: &BinaryData) {
             ]);
         }
     }
-    println!("{table}");
+    if !table.is_empty(){
+        println!("{table}");
+    }
 }
