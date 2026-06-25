@@ -43,9 +43,6 @@ pub fn draw_bindata(data: &BinaryData) {
         .set_content_arrangement(comfy_table::ContentArrangement::Dynamic);
 
     for s in &data.imports {
-        // if s.functions.is_empty() {
-        //     continue;
-        // }
         table.add_row(vec![&s.libraries, &s.functions.join(", ")]);
     }
     println!("{table}");

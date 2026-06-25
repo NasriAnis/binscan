@@ -53,16 +53,12 @@ async fn main() {
 
                 println!();
 
-                // let mut seen = HashSet::new();
-                // processed.retain(|p| seen.insert(p.id.clone()));
-
                 println!("Info :");
                 for p in &processed {
                     println!(
                         "-------------------------{}-------------------------------",
                         p.id
                     );
-
                     let pub_date: String = match p.published.as_ref() {
                         Some(t) => t.to_string(),
                         None => "Published date not shown".to_string(),
