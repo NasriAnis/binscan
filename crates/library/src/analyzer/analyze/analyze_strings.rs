@@ -7,32 +7,43 @@ pub fn run(strings: &Vec<String>, file_type: FileType) -> Vec<String> {
     let mut fetched_libs: Vec<String> = Vec::new();
 
     if file_type == FileType::ELF {
+
+        // Note: this has to be made in a way where librarties get savd in this
+        // format : [library version]
+        //
         // Versioned symbols: read@@GLIBC_2.2.5 → extract "GLIBC_2.2.5"
-        let re_versioned = Regex::new(r"\w+@@(?P<lib>GLIBC_[\d.]+)").unwrap();
+        // let re_versioned = Regex::new(r"\w+@@(?P<lib>GLIBC_[\d.]+)").unwrap();
+        // Shared library sonames: libm.so.6, libssl.so.1.1, libpthread.so.0
+        // let re_soname = Regex::new(r"\blib[\w\-]+\.so(?:\.\d+)*\b").unwrap();
+        // ld-linux / dynamic linker paths: /lib64/ld-linux-x86-64.so.2
+        // let re_ldlinux = Regex::new(r"\bld(?:-linux[\w\-]*)?.so(?:\.\d+)*\b").unwrap();
+
         // Standalone GLIBC version strings: GLIBC_2.34 (from .gnu.version_r)
         let re_glibc_ver = Regex::new(r"\bGLIBC_[\d.]+\b").unwrap();
-        // Shared library sonames: libm.so.6, libssl.so.1.1, libpthread.so.0
-        let re_soname = Regex::new(r"\blib[\w\-]+\.so(?:\.\d+)*\b").unwrap();
-        // ld-linux / dynamic linker paths: /lib64/ld-linux-x86-64.so.2
-        let re_ldlinux = Regex::new(r"\bld(?:-linux[\w\-]*)?.so(?:\.\d+)*\b").unwrap();
-
-        fetched_libs = patern_find_in(strings, file_type, fetched_libs);
         for s in strings.iter() {
             let s = s.as_str();
 
-            for caps in re_versioned.captures_iter(s) {
-                fetched_libs.push(caps["lib"].to_string());
-            }
             for m in re_glibc_ver.find_iter(s) {
-                fetched_libs.push(format!("{} {}", m.as_str(), "*"));
+                let (lib, vers) = match m.as_str().split_once("_"){
+                    Some(t) => t,
+                    None => {continue},
+                };
+                fetched_libs.push(format!("{} {}", lib, vers));
             }
-            for m in re_soname.find_iter(s) {
-                fetched_libs.push(format!("{} {}", m.as_str(), "*"));
-            }
-            for m in re_ldlinux.find_iter(s) {
-                fetched_libs.push(format!("{} {}", m.as_str(), "*"));
-            }
+
+            // for caps in re_versioned.captures_iter(s) {
+            //     fetched_libs.push(caps["lib"].to_string());
+            // }
+            // for m in re_soname.find_iter(s) {
+            //     fetched_libs.push(format!("{} {}", m.as_str(), "*"));
+            // }
+            // for m in re_ldlinux.find_iter(s) {
+            //     fetched_libs.push(format!("{} {}", m.as_str(), "*"));
+            // }
         }
+
+        fetched_libs = patern_find_in(strings, file_type, fetched_libs);
+
     } else if file_type == FileType::PE {
         fetched_libs = patern_find_in(strings, file_type, fetched_libs);
     } else {

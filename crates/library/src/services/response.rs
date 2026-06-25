@@ -128,7 +128,7 @@ pub fn process(data: Vec<Response>, eco: String) -> Vec<Vuln> {
                 }
                 if let Some(eco_specif) = &affect.ecosystem_specific {
                     if eco_specif.urgency == Some("unimportant".to_string())
-                        || eco_specif.urgency == Some("medium".to_string())
+                        // || eco_specif.urgency == Some("medium".to_string())
                         || eco_specif.urgency == Some("not yet assigned".to_string())
                         || eco_specif.urgency == Some("low".to_string())
                     {

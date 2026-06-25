@@ -7,9 +7,9 @@ pub fn make(data: &BinaryData, eco: String) -> Vec<String> {
     let mut requests: Vec<String> = Vec::new();
 
     for libs in &data.libs {
-        let l: Vec<&str> = libs.split("_").collect();
+        let l: Vec<&str> = libs.split_whitespace().collect();
 
-        if l[0] != "GLIBC" {
+        if l[1] == "unknown" {
             continue;
         };
 
