@@ -7,7 +7,6 @@ pub fn run(strings: &Vec<String>, file_type: FileType) -> Vec<String> {
     let mut fetched_libs: Vec<String> = Vec::new();
 
     if file_type == FileType::ELF {
-
         // Note: this has to be made in a way where librarties get savd in this
         // format : [library version]
         //
@@ -24,9 +23,9 @@ pub fn run(strings: &Vec<String>, file_type: FileType) -> Vec<String> {
             let s = s.as_str();
 
             for m in re_glibc_ver.find_iter(s) {
-                let (lib, vers) = match m.as_str().split_once("_"){
+                let (lib, vers) = match m.as_str().split_once("_") {
                     Some(t) => t,
-                    None => {continue},
+                    None => continue,
                 };
                 fetched_libs.push(format!("{} {}", lib, vers));
             }
@@ -43,7 +42,6 @@ pub fn run(strings: &Vec<String>, file_type: FileType) -> Vec<String> {
         }
 
         fetched_libs = patern_find_in(strings, file_type, fetched_libs);
-
     } else if file_type == FileType::PE {
         fetched_libs = patern_find_in(strings, file_type, fetched_libs);
     } else {
