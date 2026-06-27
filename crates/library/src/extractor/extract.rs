@@ -1,11 +1,12 @@
 use crate::ExtractedModules;
 use crate::{FileType, SecurityInfo};
-use goblin::{Object, error};
-use std::fs;
 
 mod elf;
 mod pe;
 mod string;
+
+use goblin::{Object, error};
+use std::fs;
 
 pub fn run(path_to_buf: String) -> Result<ExtractedModules, error::Error> {
     // Reads the entire contents of a file into a bytes vector.

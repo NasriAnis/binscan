@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
+
 use std::collections::HashSet;
 
 // Top-level response: { "vulns": [...] }

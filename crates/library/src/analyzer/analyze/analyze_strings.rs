@@ -1,7 +1,7 @@
 use crate::FileType;
 
-use regex::Regex;
 use std::collections::{HashMap, hash_set::HashSet};
+use regex::Regex;
 
 pub fn run(strings: &Vec<String>, file_type: FileType) -> Vec<String> {
     let mut fetched_libs: Vec<String> = Vec::new();

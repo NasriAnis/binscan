@@ -1,10 +1,12 @@
 use library::FileType;
-use owo_colors::OwoColorize;
-use std::{path::Path, time::Instant};
 mod commands;
 mod user_interface;
+
+use owo_colors::OwoColorize;
 use indicatif::{ProgressBar, ProgressStyle};
+
 use std::time::Duration;
+use std::{path::Path, time::Instant};
 
 use crate::user_interface::to_table;
 

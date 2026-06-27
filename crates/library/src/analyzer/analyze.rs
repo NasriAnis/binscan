@@ -1,4 +1,5 @@
 use crate::{BinaryData, ExtractedModules, analyzer::fingerprints::fingerprinting};
+
 pub mod analyze_imports;
 mod analyze_strings;
 mod detect_compiler;

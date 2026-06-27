@@ -1,4 +1,5 @@
 use crate::BinaryData;
+
 use serde_json::{self, json};
 
 // for now only works for GCC versions (elf files)
