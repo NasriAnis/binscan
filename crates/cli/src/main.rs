@@ -2,8 +2,8 @@ use library::FileType;
 mod commands;
 mod user_interface;
 
-use owo_colors::OwoColorize;
 use indicatif::{ProgressBar, ProgressStyle};
+use owo_colors::OwoColorize;
 
 use std::time::Duration;
 use std::{path::Path, time::Instant};

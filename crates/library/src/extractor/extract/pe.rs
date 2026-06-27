@@ -1,7 +1,7 @@
 use goblin::pe::PE;
 use pelite::pe32::Pe as Pe32;
-use pelite::pe64::Pe as Pe64;
 use pelite::pe32::imports::Import as Import32;
+use pelite::pe64::Pe as Pe64;
 use pelite::pe64::imports::Import as Import64;
 
 use std::panic;

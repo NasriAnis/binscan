@@ -1,5 +1,5 @@
-use std::time::Duration;
 use std::thread::sleep;
+use std::time::Duration;
 
 use crate::{
     BinaryData,
@@ -23,7 +23,7 @@ pub fn make(data: BinaryData, eco: String) -> Vec<String> {
                 }
                 Err(e) => {
                     eprintln!("[attempt {}/3] Request failed: {}", attempt, e);
-                    let _ = sleep(Duration::from_millis(500));
+                    sleep(Duration::from_millis(500));
                 }
             }
         }

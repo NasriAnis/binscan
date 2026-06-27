@@ -1,4 +1,8 @@
-use goblin::elf::{Elf, header::ET_DYN, program_header::{PF_X, PT_GNU_RELRO, PT_GNU_STACK}};
+use goblin::elf::{
+    Elf,
+    header::ET_DYN,
+    program_header::{PF_X, PT_GNU_RELRO, PT_GNU_STACK},
+};
 
 use crate::ElfSecurityInfo;
 
