@@ -8,8 +8,7 @@ use std::time::Duration;
 
 use crate::user_interface::to_table;
 
-#[tokio::main]
-async fn main() {
+fn main() {
     // parse cmd input into struct
     let args = commands::parsing::run();
 
@@ -43,11 +42,11 @@ async fn main() {
             "s".bold()
         );
 
-        if args.api && commands::request_cli::has_internet().await {
+        if args.api && commands::request_cli::has_internet() {
             if extraction_result.file_type == FileType::ELF {
                 pb.set_message(format!("{}", "Fetching matching CVEs from API...".bold()));
 
-                let response = commands::request_cli::make(&args.ecosystem, analyzer_result).await;
+                let response = commands::request_cli::make(&args.ecosystem, analyzer_result);
                 let parsed_data = commands::response_cli::parse(response);
                 let processed = commands::process_cli::process(parsed_data, &args.ecosystem);
 

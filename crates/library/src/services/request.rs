@@ -1,11 +1,12 @@
-use tokio::time::{Duration, sleep};
+use std::time::Duration;
+use std::thread::sleep;
 
 use crate::{
     BinaryData,
     services::{json_req, make_req},
 };
 
-pub async fn make(data: BinaryData, eco: String) -> Vec<String> {
+pub fn make(data: BinaryData, eco: String) -> Vec<String> {
     let json_body = json_req::make(&data, eco);
     // println!("JSON body: {:?}", json_body);
 
@@ -15,14 +16,14 @@ pub async fn make(data: BinaryData, eco: String) -> Vec<String> {
         let mut result: Option<String> = None;
 
         for attempt in 1..=3 {
-            match make_req::send(&r).await {
+            match make_req::send(&r) {
                 Ok(t) => {
                     result = Some(t);
                     break;
                 }
                 Err(e) => {
                     eprintln!("[attempt {}/3] Request failed: {}", attempt, e);
-                    sleep(Duration::from_millis(500)).await;
+                    let _ = sleep(Duration::from_millis(500));
                 }
             }
         }

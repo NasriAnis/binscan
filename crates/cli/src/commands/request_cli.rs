@@ -1,14 +1,13 @@
 use library::{BinaryData, services::request};
-use tokio::net::TcpStream;
-use tokio::time::{Duration, timeout};
 
-pub async fn make(ecosystem: &str, binary_data: BinaryData) -> Vec<String> {
-    request::make(binary_data, ecosystem.to_owned()).await
+use std::net::{SocketAddr, TcpStream};
+use std::time::Duration;
+
+pub fn make(ecosystem: &str, binary_data: BinaryData) -> Vec<String> {
+    request::make(binary_data, ecosystem.to_owned())
 }
 
-pub async fn has_internet() -> bool {
-    timeout(Duration::from_secs(3), TcpStream::connect("1.1.1.1:53"))
-        .await
-        .map(|r| r.is_ok())
-        .unwrap_or(false)
+pub fn has_internet() -> bool {
+    let addr: SocketAddr = "1.1.1.1:53".parse().unwrap();
+    TcpStream::connect_timeout(&addr, Duration::from_secs(3)).is_ok()
 }

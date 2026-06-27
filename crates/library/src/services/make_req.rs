@@ -1,4 +1,4 @@
-pub async fn send(data: &str) -> Result<String, reqwest::Error> {
+pub fn send(data: &str) -> Result<String, reqwest::Error> {
     const OS_API: &str = "https://api.osv.dev/v1/query";
 
     // debugging purpose only (test request in a proxy):
@@ -7,13 +7,11 @@ pub async fn send(data: &str) -> Result<String, reqwest::Error> {
     //     .danger_accept_invalid_certs(true)
     //     .build()?;
 
-    let client = reqwest::Client::new();
+    let client = reqwest::blocking::Client::new();
     client
         .post(OS_API)
         .header("Content-Type", "application/json")
         .body(data.to_owned())
-        .send()
-        .await?
+        .send()?
         .text()
-        .await
 }

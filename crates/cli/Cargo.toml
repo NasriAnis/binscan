@@ -9,7 +9,6 @@ path = "src/main.rs"
 
 [dependencies]
 library = { path = "../library" }
-tokio = { version = "1", features = ["full"] }
 
 # Command line parser
 clap = { version = "4.0", features = ["derive"] } 
